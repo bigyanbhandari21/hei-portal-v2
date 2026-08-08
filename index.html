@@ -2078,6 +2078,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 let chatPlatform = 'inchat';
 let chatState = 'idle';
 let chatData = {};
+let chatRegistered = false;
 
 function toggleChatSelector(){
   const sel=document.getElementById('chatSelector');
@@ -2104,7 +2105,8 @@ function openChatWindow(platform){
   else if(platform==='messenger'){title.textContent='HEI Investment';sub.textContent='Active now';avatar.textContent='HEI';}
   else{title.textContent='HEI Support';sub.textContent='Online • Typically replies instantly';avatar.textContent='HEI';}
   win.classList.add('show');
-  setTimeout(()=>startChat(),500);
+  chatRegistered = !!localStorage.getItem(HEI_INVESTOR_STATE_KEY);
+  setTimeout(function(){startChat()},500);
 }
 
 function closeChatWindow(){
@@ -2114,21 +2116,22 @@ function closeChatWindow(){
 }
 
 function chatTime(){
-  const d=new Date();
+  var d=new Date();
   return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
 }
 
-function addBotMsg(text,delay=600){
-  const body=document.getElementById('chatBody');
-  const typing=document.createElement('div');
+function addBotMsg(text,delay){
+  if(!delay) delay=600;
+  var body=document.getElementById('chatBody');
+  var typing=document.createElement('div');
   typing.className='chat-typing';
   typing.innerHTML='<i></i><i></i><i></i>';
   body.appendChild(typing);
   body.scrollTop=body.scrollHeight;
-  return new Promise(r=>{
-    setTimeout(()=>{
+  return new Promise(function(r){
+    setTimeout(function(){
       typing.remove();
-      const msg=document.createElement('div');
+      var msg=document.createElement('div');
       msg.className='chat-msg '+chatPlatform+' bot';
       msg.innerHTML=text+'<div class="chat-msg-time">'+chatTime()+'</div>';
       body.appendChild(msg);
@@ -2139,8 +2142,8 @@ function addBotMsg(text,delay=600){
 }
 
 function addUserMsg(text){
-  const body=document.getElementById('chatBody');
-  const msg=document.createElement('div');
+  var body=document.getElementById('chatBody');
+  var msg=document.createElement('div');
   msg.className='chat-msg '+chatPlatform+' user';
   msg.innerHTML=text+'<div class="chat-msg-time">'+chatTime()+'</div>';
   body.appendChild(msg);
@@ -2148,14 +2151,14 @@ function addUserMsg(text){
 }
 
 function addOptions(opts){
-  const body=document.getElementById('chatBody');
-  const wrap=document.createElement('div');
+  var body=document.getElementById('chatBody');
+  var wrap=document.createElement('div');
   wrap.className='chat-options';
-  opts.forEach(o=>{
-    const btn=document.createElement('button');
+  opts.forEach(function(o){
+    var btn=document.createElement('button');
     btn.className='chat-option-btn';
     btn.textContent=o.label;
-    btn.onclick=()=>{wrap.remove();addUserMsg(o.label);o.action();}
+    btn.onclick=function(){wrap.remove();addUserMsg(o.label);o.action();};
     wrap.appendChild(btn);
   });
   body.appendChild(wrap);
@@ -2163,18 +2166,28 @@ function addOptions(opts){
 }
 
 function addReceipt(data){
-  const body=document.getElementById('chatBody');
-  const r=document.createElement('div');
+  var body=document.getElementById('chatBody');
+  var r=document.createElement('div');
   r.className='chat-receipt';
-  let rows=data.rows.map(x=>'<div class="cr-row"><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('');
+  var rows=data.rows.map(function(x){return '<div class="cr-row"><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>';}).join('');
   r.innerHTML='<b>'+data.title+'</b>'+rows;
   body.appendChild(r);
   body.scrollTop=body.scrollHeight;
 }
 
+function addQrImage(qrSrc, caption){
+  var body=document.getElementById('chatBody');
+  var wrap=document.createElement('div');
+  wrap.className='chat-msg '+chatPlatform+' bot';
+  wrap.style.padding='6px';
+  wrap.innerHTML='<img src="'+qrSrc+'" style="width:160px;height:160px;border-radius:8px;display:block;margin:0 auto"><div style="text-align:center;font-size:9px;color:#6b7d86;margin-top:6px">'+caption+'</div><div class="chat-msg-time">'+chatTime()+'</div>';
+  body.appendChild(wrap);
+  body.scrollTop=body.scrollHeight;
+}
+
 function sendChatMsg(){
-  const inp=document.getElementById('chatInput');
-  const val=inp.value.trim();
+  var inp=document.getElementById('chatInput');
+  var val=inp.value.trim();
   if(!val)return;
   inp.value='';
   addUserMsg(val);
@@ -2183,293 +2196,451 @@ function sendChatMsg(){
 
 async function startChat(){
   await addBotMsg('Hi there! 👋 Welcome to <b>HEI Investment Support</b>.',700);
-  await addBotMsg('I\'m your digital assistant. How can I help you today?',600);
+  if(chatRegistered){
+    var s=getInvestorState();
+    await addBotMsg('Welcome back, <b>'+s.customer.name+'</b>! How can I help you today?',600);
+  } else {
+    await addBotMsg("I'm your digital assistant. I can help you open an account, invest, or manage your portfolio — all right here in this chat.",600);
+  }
   showMainMenu();
 }
 
 function showMainMenu(){
+  var opts = [];
+  if(!chatRegistered){
+    opts.push({label:'🆕 Open HEI Account & Start SIP', action:function(){flowRegister('sip')}});
+    opts.push({label:'💰 Open Account & Lump Sum', action:function(){flowRegister('lump')}});
+  } else {
+    opts.push({label:'📈 Start a new SIP', action:function(){flowInvest('sip')}});
+    opts.push({label:'💳 Pay my SIP due', action:function(){flowPaySipDue()}});
+    opts.push({label:'💰 New lump sum investment', action:function(){flowInvest('lump')}});
+    opts.push({label:'📉 Sell / Redeem investments', action:function(){flowSell()}});
+    opts.push({label:'📊 Check my portfolio', action:function(){flowPortfolio()}});
+  }
+  opts.push({label:'❓ Other enquiry', action:function(){flowOther()}});
+  addOptions(opts);
+}
+
+/* ======== REGISTRATION FLOW ======== */
+async function flowRegister(mode){
+  chatData = {mode:mode, mobile:'9800000000', email:'aarav@example.com', name:'Aarav Poudel', kycMode:'', fund:'', amount:0};
+  await addBotMsg("Great! Let's open your HEI investment account. It takes just a few minutes. 🚀",600);
+  await addBotMsg('<b>Step 1 of 6 • Contact Details</b>',400);
+  await addBotMsg('Please confirm your mobile number and email to get started.',500);
+  addReceipt({title:'📋 Your Details',rows:[['Mobile','9800000000'],['Email','aarav@example.com']]});
+  await addBotMsg('Are these details correct?',400);
   addOptions([
-    {label:'📈 Start a new SIP', action:()=>flowNewSip()},
-    {label:'💳 Pay my SIP due', action:()=>flowPaySipDue()},
-    {label:'💰 New lump sum investment', action:()=>flowLumpSum()},
-    {label:'📉 Sell my investments', action:()=>flowSell()},
-    {label:'📊 Check my portfolio', action:()=>flowPortfolio()},
-    {label:'❓ Other enquiry', action:()=>flowOther()}
+    {label:'✅ Yes, send me an OTP',action:function(){regOtpSend()}},
+    {label:'✏️ I want to change them',action:function(){chatState='regEditContact';addBotMsg('Please type your mobile number:',400);}}
   ]);
 }
 
-/* ---- FLOW: NEW SIP ---- */
-async function flowNewSip(){
-  chatState='newSip';
-  chatData={fund:'',amount:0};
-  await addBotMsg('Great choice! A monthly SIP helps you build wealth consistently. 🎯',600);
-  await addBotMsg('Which fund would you like to invest in?',500);
-  addOptions([
-    {label:'HEI Equity Growth Fund (High growth)', action:()=>{chatData.fund='HEI Equity Growth Fund';sipAskAmount();}},
-    {label:'HEI Balanced Fund (Moderate)', action:()=>{chatData.fund='HEI Balanced Fund';sipAskAmount();}},
-    {label:'HEI Income Fund (Stable)', action:()=>{chatData.fund='HEI Income Fund';sipAskAmount();}}
-  ]);
+async function regOtpSend(){
+  await addBotMsg('<b>Step 2 of 6 • Mobile Verification</b>',400);
+  await addBotMsg("I've sent a 6-digit OTP to <b>"+chatData.mobile.slice(0,4)+'••••'+chatData.mobile.slice(-2)+'</b>.',600);
+  await addBotMsg('Please enter the OTP to verify your number.<br><br>💡 <i>For this demo, use: <b>482913</b></i>',500);
+  chatState='regOtp';
 }
 
-async function sipAskAmount(){
-  await addBotMsg('Good pick! 👍 <b>'+chatData.fund+'</b>',500);
-  await addBotMsg('How much would you like to invest monthly?',500);
-  addOptions([
-    {label:'Rs. 1,000',action:()=>{chatData.amount=1000;sipConfirm();}},
-    {label:'Rs. 2,500',action:()=>{chatData.amount=2500;sipConfirm();}},
-    {label:'Rs. 5,000',action:()=>{chatData.amount=5000;sipConfirm();}},
-    {label:'Rs. 10,000',action:()=>{chatData.amount=10000;sipConfirm();}},
-    {label:'Rs. 25,000',action:()=>{chatData.amount=25000;sipConfirm();}}
-  ]);
-}
-
-async function sipConfirm(){
-  await addBotMsg('Here\'s your SIP summary:',500);
-  addReceipt({title:'📋 New SIP Order',rows:[
-    ['Fund',chatData.fund],['Monthly Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],
-    ['Deduction','1st of every month'],['Payment','connectIPS QR']
+async function regOtpVerified(){
+  await addBotMsg('✅ Mobile number verified!',500);
+  chatData.appId = 'HEI-APP-260807-'+String(1000+Math.floor(Math.random()*9000));
+  chatData.password = 'HEI@'+String(1000+Math.floor(Math.random()*9000));
+  await addBotMsg('<b>Step 3 of 6 • Application Saved</b>',400);
+  addReceipt({title:'💾 Draft Saved',rows:[
+    ['Application ID',chatData.appId],['Login ID',chatData.mobile],
+    ['Temp Password',chatData.password],['Status','SAVED']
   ]});
-  await addBotMsg('Shall I proceed with this SIP?',500);
+  await addBotMsg('Your application is saved. If you leave, you can resume anytime using Customer Login with these credentials.',600);
+  await addBotMsg('Now let\'s complete your KYC. <b>Step 4 of 6 • KYC Method</b>',500);
+  await addBotMsg('How would you like to complete your identity verification?',400);
   addOptions([
-    {label:'✅ Confirm SIP',action:()=>sipVerifyOtp()},
-    {label:'✏️ Change details',action:()=>flowNewSip()},
-    {label:'❌ Cancel',action:()=>backToMenu()}
+    {label:'📱 Import from Nagarik App (fastest)',action:function(){chatData.kycMode='nagarik';regKycNagarik();}},
+    {label:'✏️ Enter KYC details manually',action:function(){chatData.kycMode='manual';regKycManual();}}
   ]);
 }
 
-async function sipVerifyOtp(){
-  await addBotMsg('For security, I\'ve sent a 6-digit OTP to your registered mobile number <b>9800••••00</b>.',600);
-  await addBotMsg('Please enter the OTP (use <b>482913</b> for demo):',400);
-  chatState='sipOtp';
+async function regKycNagarik(){
+  await addBotMsg('<b>Step 5 of 6 • Nagarik App Import</b>',400);
+  await addBotMsg('Scan this QR code with your <b>Nagarik App</b> to import your KYC data:',500);
+  addQrImage(QR_NAGARIK_FINAL, 'Scan with Nagarik App');
+  await addBotMsg('The QR requests: Full name, DOB, Citizenship/NID, and Permanent address.',500);
+  await addBotMsg('Once scanned, tap <b>Authorize sharing</b> in the Nagarik App.',400);
+  addOptions([
+    {label:'✅ Simulate Nagarik Scan (demo)',action:function(){regKycNagarikComplete()}},
+    {label:'✏️ Switch to manual entry',action:function(){regKycManual()}}
+  ]);
 }
 
-async function sipComplete(){
-  await addBotMsg('OTP verified! ✅',500);
-  await addBotMsg('Processing your SIP registration...',700);
-  const s=getInvestorState();
-  const fundCode=chatData.fund.includes('Equity')?'HEI-EGF':chatData.fund.includes('Balanced')?'HEI-BF':'HEI-IF';
-  s.sips.push({fund:chatData.fund,amount:chatData.amount,frequency:'Monthly',status:'Active',nextDue:'01 Sep 2026'});
-  s.transactions.unshift({id:'HEI-TXN-'+String(5100+Math.floor(Math.random()*200)),date:'07 Aug 2026',type:'SIP',channel:'Chat Support',fund:chatData.fund,amount:chatData.amount,status:'Completed'});
-  const h=s.holdings.find(x=>x.code===fundCode);
-  if(h){const units=chatData.amount/h.nav;h.units+=units;h.invested+=chatData.amount;h.wacc=h.invested/h.units;}
+async function regKycNagarikComplete(){
+  await addBotMsg('Importing data from Nagarik App... ⏳',800);
+  await addBotMsg('✅ <b>KYC data imported successfully!</b>',600);
+  addReceipt({title:'🪪 Identity Verified',rows:[
+    ['Full Name','Aarav Poudel'],['DOB','2050-01-02 BS'],['Citizenship','12-XX-XX-12345'],
+    ['PAN','123456789'],['Address','Kathmandu Metropolitan City'],['Source','Nagarik App']
+  ]});
+  await addBotMsg('Your identity has been verified automatically. All checks passed! ✓',500);
+  addReceipt({title:'✅ Verification Summary',rows:[
+    ['Identity Match','✓ Passed'],['Document Quality','✓ Passed'],['Face Match','✓ Passed'],['Bank & BOID','✓ Passed']
+  ]});
+  regInvestmentStep();
+}
+
+async function regKycManual(){
+  await addBotMsg('<b>Step 5 of 6 • Manual KYC</b>',400);
+  await addBotMsg("I'll use the following demo details for your KYC:",500);
+  addReceipt({title:'🪪 KYC Details',rows:[
+    ['Full Name','Aarav Poudel'],['DOB','1993-04-15'],['Citizenship No.','12-XX-XX-12345'],
+    ['PAN','123456789'],['Address','Kathmandu Metropolitan City']
+  ]});
+  await addBotMsg('KYC details recorded. Verifying... ⏳',700);
+  await addBotMsg('✅ <b>KYC Verified!</b> All document checks passed.',600);
+  addReceipt({title:'✅ Verification Summary',rows:[
+    ['Identity Match','✓ Passed'],['Document Quality','✓ Passed'],['Face Match','✓ Passed'],['Bank & BOID','✓ Passed']
+  ]});
+  regInvestmentStep();
+}
+
+async function regInvestmentStep(){
+  await addBotMsg('<b>Step 6 of 6 • Your First Investment</b>',400);
+  var modeLabel = chatData.mode==='sip' ? 'Monthly SIP' : 'Lump Sum';
+  await addBotMsg('Now let\'s set up your first <b>'+modeLabel+'</b> investment! Which fund would you like?',500);
+  addOptions([
+    {label:'HEI Equity Growth Fund (High growth)',action:function(){chatData.fund='HEI Equity Growth Fund';regAmountStep();}},
+    {label:'HEI Balanced Fund (Moderate)',action:function(){chatData.fund='HEI Balanced Fund';regAmountStep();}},
+    {label:'HEI Income Fund (Stable)',action:function(){chatData.fund='HEI Income Fund';regAmountStep();}}
+  ]);
+}
+
+async function regAmountStep(){
+  await addBotMsg('Selected: <b>'+chatData.fund+'</b> ✓',400);
+  var label = chatData.mode==='sip' ? 'How much would you like to invest monthly?' : 'How much would you like to invest?';
+  await addBotMsg(label,500);
+  var amounts = chatData.mode==='sip' ? [1000,2500,5000,10000,25000] : [5000,10000,25000,50000,100000];
+  addOptions(amounts.map(function(a){return {
+    label:'Rs. '+a.toLocaleString('en-IN'),
+    action:function(){chatData.amount=a;regReview();}
+  };}));
+}
+
+async function regReview(){
+  var modeLabel = chatData.mode==='sip' ? 'Monthly SIP' : 'Lump Sum';
+  await addBotMsg("Here's your complete application summary:",500);
+  addReceipt({title:'📋 Application Review',rows:[
+    ['Investor',chatData.name],['Application',chatData.appId],
+    ['KYC',chatData.kycMode==='nagarik'?'Nagarik App (Verified)':'Manual (Verified)'],
+    ['Investment Type',modeLabel],['Fund',chatData.fund],
+    ['Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],['Payment','connectIPS QR']
+  ]});
+  await addBotMsg('Ready to proceed with payment?',400);
+  addOptions([
+    {label:'✅ Generate connectIPS QR',action:function(){regPayment()}},
+    {label:'✏️ Change fund/amount',action:function(){regInvestmentStep()}},
+    {label:'❌ Cancel',action:function(){backToMenu()}}
+  ]);
+}
+
+async function regPayment(){
+  var modeLabel = chatData.mode==='sip' ? 'New SIP' : 'Lump Sum';
+  await addBotMsg('<b>connectIPS Payment</b>',400);
+  await addBotMsg('Your QR code is ready! Scan it with any connectIPS-supported banking app to complete your payment of <b>Rs. '+chatData.amount.toLocaleString('en-IN')+'</b>.',600);
+  addQrImage(QR_CIPS, 'connectIPS QR • Rs. '+chatData.amount.toLocaleString('en-IN'));
+  addReceipt({title:'💳 Payment Details',rows:[
+    ['Payee','Himalayan Everest Investment Ltd'],['Purpose',modeLabel+' Investment'],
+    ['Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],['Method','connectIPS QR'],['Status','Awaiting scan']
+  ]});
+  addOptions([
+    {label:'📱 Simulate QR Scan (demo)',action:function(){regPaymentProcess()}},
+    {label:"💡 I've scanned, verify",action:function(){regPaymentProcess()}}
+  ]);
+}
+
+async function regPaymentProcess(){
+  await addBotMsg('Processing your payment... ⏳',1200);
+  await addBotMsg('Verifying with connectIPS... ⏳',800);
+  var s = getInvestorState();
+  var fundCode = chatData.fund.includes('Equity')?'HEI-EGF':chatData.fund.includes('Balanced')?'HEI-BF':'HEI-IF';
+  var h = s.holdings.find(function(x){return x.code===fundCode;});
+  if(h){var units=chatData.amount/h.nav;h.units+=units;h.invested+=chatData.amount;h.wacc=h.invested/h.units;}
+  if(chatData.mode==='sip'){
+    s.sips.push({fund:chatData.fund,amount:chatData.amount,frequency:'Monthly',status:'Active',nextDue:'01 Sep 2026'});
+  }
+  var txnId = 'HEI-TXN-'+String(5000+Math.floor(Math.random()*500));
+  s.transactions.unshift({id:txnId,date:'07 Aug 2026',type:chatData.mode==='sip'?'SIP':'Lump Sum',channel:'Chat Support',fund:chatData.fund,amount:chatData.amount,status:'Completed'});
   saveInvestorState(s);
-  await addBotMsg('🎉 <b>SIP registered successfully!</b>',600);
-  addReceipt({title:'✅ SIP Confirmation',rows:[
-    ['Reference','HEI-SIP-'+String(3000+Math.floor(Math.random()*500))],
-    ['Fund',chatData.fund],['Monthly Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],
-    ['Status','Active'],['Next Due','01 Sep 2026']
+  chatRegistered = true;
+  await addBotMsg('✅ <b>Payment successful!</b>',600);
+  await addBotMsg('🎉 <b>Your HEI Investment Account is now active!</b>',700);
+  var modeLabel = chatData.mode==='sip' ? 'Monthly SIP' : 'Lump Sum';
+  addReceipt({title:'🧾 Digital Receipt',rows:[
+    ['Reference',txnId],['Investor',chatData.name+' • HEI-CUS-10882'],
+    ['Investment',modeLabel],['Fund',chatData.fund],
+    ['Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],
+    ['Units','Allocated at today\'s NAV'],['KYC Status','Verified'],['Payment','connectIPS'],['Status','✅ Completed']
   ]});
-  await addBotMsg('Your SIP is now active! Units will be allocated at the applicable NAV each month. 📊',600);
+  if(chatData.mode==='sip'){
+    await addBotMsg('Your SIP is now active! Rs. '+chatData.amount.toLocaleString('en-IN')+' will be deducted on the 1st of every month. 📅',600);
+  } else {
+    await addBotMsg('Your lump sum investment is complete. Units have been allocated at today\'s NAV.',600);
+  }
+  await addBotMsg('You can now check your portfolio, pay SIP dues, or invest more anytime! 🎯',500);
   askAnythingElse();
 }
 
-/* ---- FLOW: PAY SIP DUE ---- */
+/* ======== INVEST FLOW (EXISTING USER) ======== */
+async function flowInvest(mode){
+  chatData = {mode:mode, fund:'', amount:0};
+  var modeLabel = mode==='sip' ? 'Monthly SIP' : 'Lump Sum';
+  await addBotMsg("Let's set up a new <b>"+modeLabel+'</b>! 🎯',500);
+  await addBotMsg('Which fund would you like to invest in?',500);
+  addOptions([
+    {label:'HEI Equity Growth Fund (High growth)',action:function(){chatData.fund='HEI Equity Growth Fund';investAmount();}},
+    {label:'HEI Balanced Fund (Moderate)',action:function(){chatData.fund='HEI Balanced Fund';investAmount();}},
+    {label:'HEI Income Fund (Stable)',action:function(){chatData.fund='HEI Income Fund';investAmount();}}
+  ]);
+}
+
+async function investAmount(){
+  await addBotMsg('Selected: <b>'+chatData.fund+'</b> ✓',400);
+  var label = chatData.mode==='sip' ? 'How much monthly?' : 'How much to invest?';
+  await addBotMsg(label,400);
+  var amounts = chatData.mode==='sip' ? [1000,2500,5000,10000,25000] : [5000,10000,25000,50000,100000];
+  addOptions(amounts.map(function(a){return {
+    label:'Rs. '+a.toLocaleString('en-IN'),
+    action:function(){chatData.amount=a;investConfirm();}
+  };}));
+}
+
+async function investConfirm(){
+  var modeLabel = chatData.mode==='sip' ? 'Monthly SIP' : 'Lump Sum';
+  await addBotMsg('Your investment summary:',500);
+  addReceipt({title:'📋 '+modeLabel+' Order',rows:[
+    ['Fund',chatData.fund],['Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],
+    ['Type',modeLabel],['Payment','connectIPS QR']
+  ]});
+  await addBotMsg('For security, I need to verify your identity with an OTP.',500);
+  await addBotMsg('Sending OTP to your registered mobile... 📱',500);
+  await addBotMsg('OTP sent to <b>9800••••00</b>. Please enter it below.<br><br>💡 <i>Demo OTP: <b>482913</b></i>',500);
+  chatState='investOtp';
+}
+
+async function investOtpVerified(){
+  await addBotMsg('✅ OTP verified! Generating payment QR...',600);
+  await addBotMsg('Scan this connectIPS QR to pay <b>Rs. '+chatData.amount.toLocaleString('en-IN')+'</b>:',500);
+  addQrImage(QR_CIPS, 'connectIPS QR • Rs. '+chatData.amount.toLocaleString('en-IN'));
+  addReceipt({title:'💳 Payment',rows:[
+    ['Payee','Himalayan Everest Investment Ltd'],['Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],['Status','Awaiting scan']
+  ]});
+  addOptions([
+    {label:'📱 Simulate QR Scan (demo)',action:function(){investPayProcess()}},
+    {label:"💡 I've scanned, verify",action:function(){investPayProcess()}},
+    {label:'❌ Cancel',action:function(){backToMenu()}}
+  ]);
+}
+
+async function investPayProcess(){
+  await addBotMsg('Processing connectIPS payment... ⏳',1000);
+  await addBotMsg('Verifying transaction... ⏳',800);
+  var s=getInvestorState();
+  var fundCode=chatData.fund.includes('Equity')?'HEI-EGF':chatData.fund.includes('Balanced')?'HEI-BF':'HEI-IF';
+  var h=s.holdings.find(function(x){return x.code===fundCode;});
+  if(h){var units=chatData.amount/h.nav;h.units+=units;h.invested+=chatData.amount;h.wacc=h.invested/h.units;}
+  if(chatData.mode==='sip'){
+    s.sips.push({fund:chatData.fund,amount:chatData.amount,frequency:'Monthly',status:'Active',nextDue:'01 Sep 2026'});
+  }
+  var txnId='HEI-TXN-'+String(5100+Math.floor(Math.random()*400));
+  s.transactions.unshift({id:txnId,date:'07 Aug 2026',type:chatData.mode==='sip'?'SIP':'Lump Sum',channel:'Chat Support',fund:chatData.fund,amount:chatData.amount,status:'Completed'});
+  saveInvestorState(s);
+  var modeLabel = chatData.mode==='sip' ? 'SIP' : 'Lump Sum';
+  await addBotMsg('✅ <b>Payment confirmed!</b>',600);
+  await addBotMsg('🎉 <b>'+modeLabel+' registered successfully!</b>',600);
+  addReceipt({title:'🧾 Digital Receipt',rows:[
+    ['Reference',txnId],['Investment',modeLabel],['Fund',chatData.fund],
+    ['Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],
+    ['Units','Allocated at today\'s NAV'],['Payment','connectIPS QR'],['Status','✅ Completed']
+  ]});
+  if(chatData.mode==='sip') await addBotMsg('Your new SIP is active! Next deduction: 01 Sep 2026. 📅',500);
+  askAnythingElse();
+}
+
+/* ======== PAY SIP DUE ======== */
 async function flowPaySipDue(){
-  chatState='paySip';
-  const s=getInvestorState();
-  const dueSips=s.sips.filter(x=>x.status==='Active');
+  var s=getInvestorState();
+  var dueSips=s.sips.filter(function(x){return x.status==='Active';});
   if(dueSips.length===0){
-    await addBotMsg('You don\'t have any active SIPs at the moment.',500);
+    await addBotMsg("You don't have any active SIPs with pending dues at the moment. 😊",500);
     askAnythingElse();return;
   }
-  await addBotMsg('You have <b>'+dueSips.length+'</b> active SIP(s):',500);
-  dueSips.forEach((sip,i)=>{
-    addReceipt({title:'SIP #'+(i+1),rows:[['Fund',sip.fund],['Amount','Rs. '+sip.amount.toLocaleString('en-IN')],['Next Due',sip.nextDue||'01 Sep 2026']]});
+  await addBotMsg('📋 You have <b>'+dueSips.length+'</b> active SIP(s):',500);
+  dueSips.forEach(function(sip,i){
+    addReceipt({title:'SIP #'+(i+1),rows:[['Fund',sip.fund],['Monthly Amount','Rs. '+sip.amount.toLocaleString('en-IN')],['Next Due',sip.nextDue||'01 Sep 2026'],['Status','Active']]});
   });
-  const total=dueSips.reduce((a,x)=>a+x.amount,0);
+  var total=dueSips.reduce(function(a,x){return a+x.amount;},0);
   chatData.dueAmount=total;chatData.dueSips=dueSips;
-  await addBotMsg('Total due: <b>Rs. '+total.toLocaleString('en-IN')+'</b>',500);
-  await addBotMsg('Would you like to pay now?',400);
+  await addBotMsg('Total SIP due: <b>Rs. '+total.toLocaleString('en-IN')+'</b>',500);
   addOptions([
-    {label:'💳 Pay Rs. '+total.toLocaleString('en-IN')+' now',action:()=>paySipProcess()},
-    {label:'🔙 Back to menu',action:()=>backToMenu()}
+    {label:'💳 Pay now via connectIPS',action:function(){paySipQr()}},
+    {label:'🔙 Back to menu',action:function(){backToMenu()}}
+  ]);
+}
+
+async function paySipQr(){
+  await addBotMsg('Generating connectIPS QR for <b>Rs. '+chatData.dueAmount.toLocaleString('en-IN')+'</b>...',600);
+  addQrImage(QR_CIPS, 'connectIPS QR • SIP Payment • Rs. '+chatData.dueAmount.toLocaleString('en-IN'));
+  addReceipt({title:'💳 SIP Payment',rows:[
+    ['Payee','Himalayan Everest Investment Ltd'],['Purpose','SIP Due Payment'],
+    ['Amount','Rs. '+chatData.dueAmount.toLocaleString('en-IN')],['SIPs',chatData.dueSips.length+' fund(s)'],['Status','Awaiting scan']
+  ]});
+  await addBotMsg('Scan the QR with your banking app to pay.',400);
+  addOptions([
+    {label:'📱 Simulate QR Scan (demo)',action:function(){paySipProcess()}},
+    {label:"💡 I've scanned, verify",action:function(){paySipProcess()}}
   ]);
 }
 
 async function paySipProcess(){
-  await addBotMsg('Generating connectIPS QR for payment of <b>Rs. '+chatData.dueAmount.toLocaleString('en-IN')+'</b>...',700);
-  await addBotMsg('📱 <b>connectIPS QR Ready</b>\n\nScan with your banking app to complete payment.\n\n<i>(In this demo, the payment will process automatically)</i>',800);
-  await addBotMsg('Processing payment... ⏳',1200);
-  const s=getInvestorState();
-  chatData.dueSips.forEach(sip=>{
-    const h=s.holdings.find(x=>x.name===sip.fund);
-    if(h){const units=sip.amount/h.nav;h.units+=units;h.invested+=sip.amount;h.wacc=h.invested/h.units;}
-    s.transactions.unshift({id:'HEI-TXN-'+String(5200+Math.floor(Math.random()*200)),date:'07 Aug 2026',type:'SIP',channel:'Chat Payment',fund:sip.fund,amount:sip.amount,status:'Completed'});
+  await addBotMsg('Processing connectIPS payment... ⏳',1000);
+  await addBotMsg('Verifying transaction... ⏳',800);
+  var s=getInvestorState();
+  chatData.dueSips.forEach(function(sip){
+    var h=s.holdings.find(function(x){return x.name===sip.fund;});
+    if(h){var units=sip.amount/h.nav;h.units+=units;h.invested+=sip.amount;h.wacc=h.invested/h.units;}
+    s.transactions.unshift({id:'HEI-TXN-'+String(5200+Math.floor(Math.random()*300)),date:'07 Aug 2026',type:'SIP',channel:'Chat Payment',fund:sip.fund,amount:sip.amount,status:'Completed'});
   });
   saveInvestorState(s);
-  await addBotMsg('✅ <b>Payment successful!</b>',600);
+  await addBotMsg('✅ <b>SIP payment successful!</b>',600);
   addReceipt({title:'🧾 Payment Receipt',rows:[
     ['Reference','HEI-PAY-'+String(8000+Math.floor(Math.random()*500))],
     ['Amount','Rs. '+chatData.dueAmount.toLocaleString('en-IN')],
-    ['Method','connectIPS QR'],['Status','Completed'],['Date','07 Aug 2026']
+    ['SIPs Paid',chatData.dueSips.length],['Method','connectIPS QR'],['Status','✅ Completed'],['Date','07 Aug 2026']
   ]});
-  await addBotMsg('Units have been allocated at today\'s NAV. You can check your updated portfolio anytime! 🎉',600);
+  await addBotMsg("Units have been allocated at today's NAV for all your SIPs. Your portfolio is updated! 📊",600);
   askAnythingElse();
 }
 
-/* ---- FLOW: LUMP SUM ---- */
-async function flowLumpSum(){
-  chatState='lumpSum';
-  chatData={fund:'',amount:0};
-  await addBotMsg('A one-time lump sum investment is a great way to deploy capital! 💪',600);
-  await addBotMsg('Which fund would you like to invest in?',500);
-  addOptions([
-    {label:'HEI Equity Growth Fund (High growth)',action:()=>{chatData.fund='HEI Equity Growth Fund';lumpAskAmount();}},
-    {label:'HEI Balanced Fund (Moderate)',action:()=>{chatData.fund='HEI Balanced Fund';lumpAskAmount();}},
-    {label:'HEI Income Fund (Stable)',action:()=>{chatData.fund='HEI Income Fund';lumpAskAmount();}}
-  ]);
-}
-
-async function lumpAskAmount(){
-  await addBotMsg('Selected: <b>'+chatData.fund+'</b> ✓',400);
-  await addBotMsg('How much would you like to invest?',500);
-  addOptions([
-    {label:'Rs. 5,000',action:()=>{chatData.amount=5000;lumpConfirm();}},
-    {label:'Rs. 10,000',action:()=>{chatData.amount=10000;lumpConfirm();}},
-    {label:'Rs. 25,000',action:()=>{chatData.amount=25000;lumpConfirm();}},
-    {label:'Rs. 50,000',action:()=>{chatData.amount=50000;lumpConfirm();}},
-    {label:'Rs. 1,00,000',action:()=>{chatData.amount=100000;lumpConfirm();}}
-  ]);
-}
-
-async function lumpConfirm(){
-  await addBotMsg('Your investment summary:',500);
-  addReceipt({title:'📋 Lump Sum Order',rows:[
-    ['Fund',chatData.fund],['Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],
-    ['Type','One-time Investment'],['Payment','connectIPS QR']
-  ]});
-  await addBotMsg('Ready to proceed?',400);
-  addOptions([
-    {label:'✅ Confirm & Pay',action:()=>lumpProcess()},
-    {label:'✏️ Change details',action:()=>flowLumpSum()},
-    {label:'❌ Cancel',action:()=>backToMenu()}
-  ]);
-}
-
-async function lumpProcess(){
-  await addBotMsg('Generating connectIPS QR for <b>Rs. '+chatData.amount.toLocaleString('en-IN')+'</b>...',700);
-  await addBotMsg('Processing payment... ⏳',1200);
-  const s=getInvestorState();
-  const fundCode=chatData.fund.includes('Equity')?'HEI-EGF':chatData.fund.includes('Balanced')?'HEI-BF':'HEI-IF';
-  const h=s.holdings.find(x=>x.code===fundCode);
-  if(h){const units=chatData.amount/h.nav;h.units+=units;h.invested+=chatData.amount;h.wacc=h.invested/h.units;}
-  s.transactions.unshift({id:'HEI-TXN-'+String(5300+Math.floor(Math.random()*200)),date:'07 Aug 2026',type:'Lump Sum',channel:'Chat Support',fund:chatData.fund,amount:chatData.amount,status:'Completed'});
-  saveInvestorState(s);
-  await addBotMsg('🎉 <b>Investment completed!</b>',600);
-  addReceipt({title:'✅ Investment Confirmation',rows:[
-    ['Reference','HEI-TXN-'+String(5300+Math.floor(Math.random()*200))],
-    ['Fund',chatData.fund],['Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],
-    ['Units','At today\'s NAV'],['Status','Completed']
-  ]});
-  await addBotMsg('Units have been allocated. Check your portfolio to see the updated holdings! 📊',600);
-  askAnythingElse();
-}
-
-/* ---- FLOW: SELL ---- */
+/* ======== SELL/REDEEM ======== */
 async function flowSell(){
-  chatState='sell';
-  const s=getInvestorState();
-  if(s.holdings.length===0){
-    await addBotMsg('You don\'t have any holdings to sell at the moment.',500);
+  var s=getInvestorState();
+  var active=s.holdings.filter(function(h){return h.units>0;});
+  if(active.length===0){
+    await addBotMsg("You don't have any holdings to redeem at the moment.",500);
     askAnythingElse();return;
   }
   await addBotMsg('Here are your current holdings:',500);
-  s.holdings.forEach(h=>{
-    addReceipt({title:h.name,rows:[
+  active.forEach(function(h){
+    addReceipt({title:h.name+' ('+h.code+')',rows:[
       ['Units',h.units.toFixed(4)],['NAV','Rs. '+h.nav.toFixed(2)],
-      ['Current Value','Rs. '+(h.units*h.nav).toLocaleString('en-IN',{maximumFractionDigits:0})]
+      ['Current Value','Rs. '+Math.round(h.units*h.nav).toLocaleString('en-IN')]
     ]});
   });
-  await addBotMsg('Which fund would you like to sell from?',500);
-  addOptions(s.holdings.map(h=>({
+  await addBotMsg('Which fund would you like to redeem from?',500);
+  addOptions(active.map(function(h){return {
     label:h.name,
-    action:()=>{chatData.sellFund=h;sellAskAmount();}
-  })));
+    action:function(){chatData.sellFund=h;sellAmount();}
+  };}));
 }
 
-async function sellAskAmount(){
-  const h=chatData.sellFund;
-  const val=Math.round(h.units*h.nav);
-  await addBotMsg('Selected: <b>'+h.name+'</b>\nCurrent value: <b>Rs. '+val.toLocaleString('en-IN')+'</b>',500);
+async function sellAmount(){
+  var h=chatData.sellFund;
+  var val=Math.round(h.units*h.nav);
+  await addBotMsg('Selected: <b>'+h.name+'</b><br>Current value: <b>Rs. '+val.toLocaleString('en-IN')+'</b>',500);
   await addBotMsg('How much would you like to redeem?',400);
-  const half=Math.round(val/2);
-  const quarter=Math.round(val/4);
+  var quarter=Math.round(val/4), half=Math.round(val/2);
   addOptions([
-    {label:'Rs. '+quarter.toLocaleString('en-IN')+' (25%)',action:()=>{chatData.sellAmount=quarter;sellConfirm();}},
-    {label:'Rs. '+half.toLocaleString('en-IN')+' (50%)',action:()=>{chatData.sellAmount=half;sellConfirm();}},
-    {label:'Rs. '+val.toLocaleString('en-IN')+' (Full)',action:()=>{chatData.sellAmount=val;sellConfirm();}},
-    {label:'🔙 Back',action:()=>backToMenu()}
+    {label:'Rs. '+quarter.toLocaleString('en-IN')+' (25%)',action:function(){chatData.sellAmount=quarter;sellConfirm();}},
+    {label:'Rs. '+half.toLocaleString('en-IN')+' (50%)',action:function(){chatData.sellAmount=half;sellConfirm();}},
+    {label:'Rs. '+val.toLocaleString('en-IN')+' (Full)',action:function(){chatData.sellAmount=val;sellConfirm();}},
+    {label:'🔙 Back',action:function(){backToMenu()}}
   ]);
 }
 
 async function sellConfirm(){
   await addBotMsg('Redemption summary:',500);
   addReceipt({title:'📋 Redemption Order',rows:[
-    ['Fund',chatData.sellFund.name],['Redemption','Rs. '+chatData.sellAmount.toLocaleString('en-IN')],
+    ['Fund',chatData.sellFund.name],['Redemption Amount','Rs. '+chatData.sellAmount.toLocaleString('en-IN')],
     ['Settlement','T+2 business days'],['Credit To','Registered bank account']
   ]});
-  await addBotMsg('Proceed with this redemption?',400);
-  addOptions([
-    {label:'✅ Confirm Sell',action:()=>sellProcess()},
-    {label:'❌ Cancel',action:()=>backToMenu()}
-  ]);
+  await addBotMsg('⚠️ Redemption proceeds will be credited to your bank account within 2 business days.',500);
+  await addBotMsg('Verify identity with OTP to proceed. Sending to <b>9800••••00</b>...',500);
+  await addBotMsg('Enter OTP below. 💡 <i>Demo: <b>482913</b></i>',400);
+  chatState='sellOtp';
 }
 
 async function sellProcess(){
+  await addBotMsg('✅ OTP verified!',400);
   await addBotMsg('Processing your redemption request... ⏳',1000);
-  const s=getInvestorState();
-  const h=s.holdings.find(x=>x.code===chatData.sellFund.code);
+  var s=getInvestorState();
+  var h=s.holdings.find(function(x){return x.code===chatData.sellFund.code;});
   if(h){
-    const unitsToSell=chatData.sellAmount/h.nav;
+    var unitsToSell=chatData.sellAmount/h.nav;
     h.units=Math.max(0,h.units-unitsToSell);
     h.invested=Math.max(0,h.invested-chatData.sellAmount);
     if(h.units>0)h.wacc=h.invested/h.units;
   }
-  s.transactions.unshift({id:'HEI-TXN-'+String(5400+Math.floor(Math.random()*200)),date:'07 Aug 2026',type:'Redemption',channel:'Chat Support',fund:chatData.sellFund.name,amount:chatData.sellAmount,status:'Processing'});
+  var redId='HEI-RED-'+String(2000+Math.floor(Math.random()*500));
+  s.transactions.unshift({id:redId,date:'07 Aug 2026',type:'Redemption',channel:'Chat Support',fund:chatData.sellFund.name,amount:chatData.sellAmount,status:'Processing'});
   saveInvestorState(s);
   await addBotMsg('✅ <b>Redemption order placed!</b>',600);
   addReceipt({title:'🧾 Redemption Confirmation',rows:[
-    ['Reference','HEI-RED-'+String(2000+Math.floor(Math.random()*500))],
-    ['Fund',chatData.sellFund.name],['Amount','Rs. '+chatData.sellAmount.toLocaleString('en-IN')],
-    ['Status','Processing (T+2)'],['Credit To','Registered bank']
+    ['Reference',redId],['Fund',chatData.sellFund.name],
+    ['Amount','Rs. '+chatData.sellAmount.toLocaleString('en-IN')],
+    ['Status','Processing (T+2)'],['Credit To','Registered bank account'],['Date','07 Aug 2026']
   ]});
   await addBotMsg('The amount will be credited to your registered bank account within 2 business days. 🏦',600);
   askAnythingElse();
 }
 
-/* ---- FLOW: PORTFOLIO ---- */
+/* ======== PORTFOLIO ======== */
 async function flowPortfolio(){
-  const s=getInvestorState();
-  const totals=s.holdings.reduce((a,h)=>({invested:a.invested+h.invested,current:a.current+(h.units*h.nav)}),{invested:0,current:0});
-  const gain=totals.current-totals.invested;
-  const ret=totals.invested>0?(gain/totals.invested*100):0;
-  await addBotMsg('Here\'s your portfolio snapshot: 📊',600);
-  addReceipt({title:'💼 Portfolio Overview',rows:[
-    ['Total Invested','Rs. '+totals.invested.toLocaleString('en-IN',{maximumFractionDigits:0})],
-    ['Current Value','Rs. '+totals.current.toLocaleString('en-IN',{maximumFractionDigits:0})],
-    ['Gain/Loss',(gain>=0?'+':'')+' Rs. '+Math.abs(gain).toLocaleString('en-IN',{maximumFractionDigits:0})],
+  var s=getInvestorState();
+  var totals=s.holdings.reduce(function(a,h){return {invested:a.invested+h.invested,current:a.current+(h.units*h.nav)};},{invested:0,current:0});
+  var gain=totals.current-totals.invested;
+  var ret=totals.invested>0?(gain/totals.invested*100):0;
+  await addBotMsg('📊 <b>Portfolio Snapshot</b>',500);
+  addReceipt({title:'💼 Overview',rows:[
+    ['Total Invested','Rs. '+Math.round(totals.invested).toLocaleString('en-IN')],
+    ['Current Value','Rs. '+Math.round(totals.current).toLocaleString('en-IN')],
+    ['Gain/Loss',(gain>=0?'+ ':'- ')+'Rs. '+Math.abs(Math.round(gain)).toLocaleString('en-IN')],
     ['Return',(ret>=0?'+':'')+ret.toFixed(2)+'%'],
     ['Holdings',s.holdings.length+' funds'],
-    ['Active SIPs',s.sips.filter(x=>x.status==='Active').length]
+    ['Active SIPs',s.sips.filter(function(x){return x.status==='Active';}).length]
   ]});
-  s.holdings.forEach(h=>{
+  s.holdings.forEach(function(h){
     addReceipt({title:h.name+' ('+h.code+')',rows:[
       ['Units',h.units.toFixed(4)],['NAV','Rs. '+h.nav.toFixed(2)],
-      ['Value','Rs. '+(h.units*h.nav).toLocaleString('en-IN',{maximumFractionDigits:0})]
+      ['Invested','Rs. '+Math.round(h.invested).toLocaleString('en-IN')],
+      ['Value','Rs. '+Math.round(h.units*h.nav).toLocaleString('en-IN')]
     ]});
   });
+  if(s.sips.length>0){
+    await addBotMsg('<b>Active SIPs:</b>',400);
+    s.sips.filter(function(x){return x.status==='Active';}).forEach(function(sip){
+      addReceipt({title:'📅 '+sip.fund,rows:[
+        ['Amount','Rs. '+sip.amount.toLocaleString('en-IN')+'/month'],
+        ['Next Due',sip.nextDue||'01 Sep 2026'],['Status','Active']
+      ]});
+    });
+  }
+  if(s.transactions.length>0){
+    await addBotMsg('<b>Recent Transactions:</b>',400);
+    s.transactions.slice(0,3).forEach(function(tx){
+      addReceipt({title:tx.type+' • '+tx.date,rows:[
+        ['Ref',tx.id],['Fund',tx.fund],['Amount','Rs. '+tx.amount.toLocaleString('en-IN')],['Status',tx.status]
+      ]});
+    });
+  }
   askAnythingElse();
 }
 
-/* ---- FLOW: OTHER ---- */
+/* ======== OTHER ======== */
 async function flowOther(){
-  await addBotMsg('No problem! You can reach our support team at:',500);
-  await addBotMsg('📞 <b>01-4XXXXXX</b> (Office hours)\n📧 <b>support@hei.com.np</b>\n🏢 Durbar Marg, Kathmandu',600);
-  await addBotMsg('Or describe your question here and I\'ll try to help!',400);
+  await addBotMsg('No problem! You can reach our support team through:',500);
+  await addBotMsg('📞 <b>01-4XXXXXX</b> (Office hours: Sun-Fri, 10am-4pm)<br>📧 <b>support@hei.com.np</b><br>🏢 Durbar Marg, Kathmandu<br>🌐 <b>hei.com.np</b>',600);
+  await addBotMsg('Or type your question below and I\'ll do my best to help! 😊',400);
   chatState='freeChat';
 }
 
-/* ---- UTILITIES ---- */
+/* ======== UTILITIES ======== */
 async function askAnythingElse(){
   await addBotMsg('Is there anything else I can help you with?',500);
   showMainMenu();
@@ -2482,22 +2653,57 @@ async function backToMenu(){
 }
 
 function handleFreeText(text){
-  const lower=text.toLowerCase();
-  if(chatState==='sipOtp'){
-    if(text==='482913'||text.length===6){sipComplete();}
-    else{addBotMsg('That doesn\'t look right. Try <b>482913</b> for the demo OTP.',500);}
+  var lower=text.toLowerCase();
+  if(chatState==='regOtp'){
+    if(text==='482913'||text.length===6){chatState='idle';regOtpVerified();}
+    else{addBotMsg("That doesn't look right. Please enter the 6-digit OTP.<br>💡 <i>Demo: <b>482913</b></i>",500);}
     return;
   }
-  if(lower.includes('sip')&&(lower.includes('new')||lower.includes('start'))){flowNewSip();return;}
-  if(lower.includes('pay')&&lower.includes('sip')){flowPaySipDue();return;}
-  if(lower.includes('lump')||lower.includes('one-time')||lower.includes('onetime')){flowLumpSum();return;}
-  if(lower.includes('sell')||lower.includes('redeem')){flowSell();return;}
-  if(lower.includes('portfolio')||lower.includes('balance')||lower.includes('holdings')){flowPortfolio();return;}
-  if(lower.includes('hello')||lower.includes('hi')||lower.includes('hey')){
-    addBotMsg('Hello! 😊 How can I help you today?',400).then(()=>showMainMenu());return;
+  if(chatState==='investOtp'){
+    if(text==='482913'||text.length===6){chatState='idle';investOtpVerified();}
+    else{addBotMsg('Invalid OTP. Try <b>482913</b> for demo.',500);}
+    return;
   }
-  addBotMsg('Thanks for your message! Let me help you with one of these options:',500).then(()=>showMainMenu());
+  if(chatState==='sellOtp'){
+    if(text==='482913'||text.length===6){chatState='idle';sellProcess();}
+    else{addBotMsg('Invalid OTP. Try <b>482913</b> for demo.',500);}
+    return;
+  }
+  if(chatState==='regEditContact'){
+    chatData.mobile=text;chatState='regEditEmail';
+    addBotMsg('Got it! Now type your email address:',400);
+    return;
+  }
+  if(chatState==='regEditEmail'){
+    chatData.email=text;chatState='idle';
+    addBotMsg('Updated! Mobile: <b>'+chatData.mobile+'</b>, Email: <b>'+chatData.email+'</b>',400).then(function(){
+      addOptions([{label:'✅ Send me an OTP',action:function(){regOtpSend()}}]);
+    });
+    return;
+  }
+  if(lower.includes('sip')&&(lower.includes('new')||lower.includes('start'))){
+    chatRegistered?flowInvest('sip'):flowRegister('sip');return;
+  }
+  if(lower.includes('pay')&&lower.includes('sip')){chatRegistered?flowPaySipDue():flowRegister('sip');return;}
+  if(lower.includes('lump')||lower.includes('one-time')){
+    chatRegistered?flowInvest('lump'):flowRegister('lump');return;
+  }
+  if(lower.includes('sell')||lower.includes('redeem')){
+    if(chatRegistered) flowSell(); else addBotMsg('You need an account first. Let me help you open one!',400).then(function(){flowRegister('sip')});return;
+  }
+  if(lower.includes('portfolio')||lower.includes('balance')||lower.includes('holding')){
+    if(chatRegistered) flowPortfolio(); else addBotMsg('You need an account first!',400).then(function(){flowRegister('sip')});return;
+  }
+  if(lower.includes('hello')||lower.includes('hi')||lower.includes('hey')||lower.includes('namaste')){
+    addBotMsg('Hello! 🙏 How can I help you today?',400).then(function(){showMainMenu()});return;
+  }
+  if(lower.includes('thank')){
+    addBotMsg("You're welcome! 😊 Happy investing!",400).then(function(){showMainMenu()});return;
+  }
+  addBotMsg("I'm here to help! Let me show you what I can do:",500).then(function(){showMainMenu()});
 }
+
+
 
 </script>
 
