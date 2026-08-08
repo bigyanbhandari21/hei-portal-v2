@@ -379,6 +379,79 @@ a{color:inherit;text-decoration:none}
 @media(max-width:900px){.clean-nav{grid-template-columns:1fr auto}.clean-links{display:none}.clean-actions{grid-column:2}.clean-hero-inner{grid-template-columns:1fr;gap:38px;padding-top:62px}.clean-hero-copy h1{font-size:52px}.route-grid,.clean-fund-grid{grid-template-columns:1fr}.clean-remit-inner{grid-template-columns:1fr}.clean-remit-card{margin-top:0}}
 @media(max-width:600px){.clean-header{height:60px}.clean-nav{padding:0 15px}.clean-brand-copy span{display:none}.clean-link-btn{display:none}.clean-login-btn{padding:8px 13px}.clean-hero-inner{padding:52px 17px 70px}.clean-hero-copy h1{font-size:42px}.clean-hero-copy p{font-size:13px}.clean-proof{flex-wrap:wrap}.starter-amounts{grid-template-columns:1fr 1fr}.clean-route-section,.clean-funds{padding-left:17px;padding-right:17px}.clean-section-head h2{font-size:26px}.clean-section-head.inline{align-items:flex-start}.clean-remit{padding:0 17px}.clean-remit-copy{padding:30px}.clean-remit-card{margin:14px}.clean-footer{padding:22px 17px;flex-direction:column}}
 
+/* ======== CHATBOT SUPPORT WIDGET ======== */
+.chat-fab{position:fixed;bottom:24px;right:24px;z-index:300;display:flex;align-items:center;gap:10px;cursor:pointer;animation:chatFabIn .5s ease both .8s}
+.chat-fab-label{background:linear-gradient(135deg,#0f4358,#166283);color:#fff;padding:10px 16px;border-radius:12px 12px 4px 12px;font-size:10px;font-weight:800;letter-spacing:.03em;line-height:1.35;box-shadow:0 8px 28px rgba(15,67,88,.28);white-space:nowrap}
+.chat-fab-label span{display:block;font-size:7px;font-weight:600;opacity:.7;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.chat-fab-btn{width:54px;height:54px;border-radius:50%;border:0;background:linear-gradient(135deg,#166283,#1a7a9e);color:#fff;font-size:22px;display:grid;place-items:center;box-shadow:0 8px 28px rgba(22,98,131,.35);position:relative;transition:.25s ease}
+.chat-fab-btn:hover{transform:scale(1.08);box-shadow:0 12px 36px rgba(22,98,131,.45)}
+.chat-fab-btn::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(22,98,131,.3);animation:chatPulse 2s ease infinite}
+@keyframes chatPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.18);opacity:0}}
+@keyframes chatFabIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* platform selector */
+.chat-selector{position:fixed;bottom:90px;right:24px;z-index:310;width:320px;background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.18);display:none;overflow:hidden;animation:chatSlideUp .3s ease both}
+.chat-selector.show{display:block}
+.chat-selector-head{padding:20px;background:linear-gradient(135deg,#0f4358,#1a7a9e);color:#fff;position:relative}
+.chat-selector-head h3{font-size:15px;margin:0 0 3px;font-weight:800}
+.chat-selector-head p{font-size:10px;opacity:.8;margin:0;line-height:1.4}
+.chat-selector-head .cs-close{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;font-size:15px;display:grid;place-items:center;cursor:pointer}
+.chat-selector-options{padding:14px}
+.chat-platform{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #e8edf0;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:.18s ease;background:#fff}
+.chat-platform:hover{border-color:#b8d4e0;background:#f6fbfd;transform:translateX(3px)}
+.chat-platform:last-child{margin-bottom:0}
+.chat-platform-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.chat-platform-icon.whatsapp{background:#dcf8c6;color:#25d366}
+.chat-platform-icon.messenger{background:#e3d9ff;color:#0084ff}
+.chat-platform-icon.inchat{background:#e2f1f6;color:#166283}
+.chat-platform-info b{display:block;font-size:11px;color:#1d3d4d}
+.chat-platform-info span{font-size:9px;color:#7b8d96}
+.chat-platform-arrow{margin-left:auto;font-size:14px;color:#adb8be}
+@keyframes chatSlideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* chat window */
+.chat-window{position:fixed;bottom:24px;right:24px;z-index:320;width:380px;height:580px;border-radius:18px;overflow:hidden;box-shadow:0 20px 70px rgba(0,0,0,.22);display:none;flex-direction:column;animation:chatSlideUp .3s ease both}
+.chat-window.show{display:flex}
+.chat-window-head{padding:14px 16px;display:flex;align-items:center;gap:10px;color:#fff;position:relative}
+.chat-window-head.whatsapp{background:#075e54}
+.chat-window-head.messenger{background:#0084ff}
+.chat-window-head.inchat{background:linear-gradient(135deg,#0f4358,#166283)}
+.chat-window-avatar{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:10px;font-weight:800;flex-shrink:0}
+.chat-window-head-info b{display:block;font-size:12px}
+.chat-window-head-info span{font-size:9px;opacity:.8}
+.chat-window-close{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;font-size:16px;display:grid;place-items:center;cursor:pointer}
+.chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px}
+.chat-body.whatsapp{background:#e5ddd5 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23d9d2c5' width='80' height='80' opacity='.08'/%3E%3C/svg%3E")}
+.chat-body.messenger{background:#f0f0f0}
+.chat-body.inchat{background:#f4f8fa}
+.chat-msg{max-width:82%;padding:9px 12px;border-radius:12px;font-size:11px;line-height:1.55;animation:msgIn .3s ease both}
+.chat-msg.bot{align-self:flex-start;background:#fff;color:#1d3d4d;border-bottom-left-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.chat-msg.user{align-self:flex-end;background:#166283;color:#fff;border-bottom-right-radius:4px}
+.chat-msg.whatsapp.bot{background:#dcf8c6;color:#1a3a2a}
+.chat-msg.whatsapp.user{background:#fff;color:#333}
+.chat-msg.messenger.bot{background:#0084ff;color:#fff}
+.chat-msg.messenger.user{background:#e4e6eb;color:#1c1e21}
+.chat-msg-time{font-size:7px;opacity:.55;margin-top:3px;text-align:right}
+.chat-options{display:flex;flex-direction:column;gap:5px;margin-top:4px;align-self:flex-start;max-width:85%}
+.chat-option-btn{padding:9px 14px;border:1px solid #d0dce2;border-radius:10px;background:#fff;color:#166283;font-size:10px;font-weight:700;text-align:left;cursor:pointer;transition:.18s ease}
+.chat-option-btn:hover{background:#f0f7fa;border-color:#9cc3d4;transform:translateX(2px)}
+.chat-typing{align-self:flex-start;padding:10px 16px;border-radius:12px;background:#fff;display:flex;gap:4px;align-items:center}
+.chat-typing i{width:6px;height:6px;border-radius:50%;background:#8b9da6;animation:typeDot 1.2s ease infinite}
+.chat-typing i:nth-child(2){animation-delay:.2s}
+.chat-typing i:nth-child(3){animation-delay:.4s}
+@keyframes typeDot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.chat-input-bar{padding:10px 14px;background:#fff;border-top:1px solid #e8edf0;display:flex;gap:8px;align-items:center}
+.chat-input-bar input{flex:1;height:36px;border:1px solid #d5dfe4;border-radius:18px;padding:0 14px;font-size:11px;color:#22343d;outline:none}
+.chat-input-bar input:focus{border-color:#8eb6c7}
+.chat-input-bar button{width:36px;height:36px;border-radius:50%;border:0;background:#166283;color:#fff;font-size:14px;display:grid;place-items:center;cursor:pointer}
+.chat-receipt{background:#f7fbfc;border:1px solid #dce8ed;border-radius:10px;padding:10px;margin-top:4px;font-size:9px}
+.chat-receipt b{display:block;color:#1d3d4d;margin-bottom:4px;font-size:10px}
+.chat-receipt .cr-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #edf2f4}
+.chat-receipt .cr-row:last-child{border-bottom:0}
+.chat-receipt .cr-row span{color:#6b7d86}
+.chat-receipt .cr-row strong{color:#173f50}
+@media(max-width:500px){.chat-window{width:calc(100vw - 20px);height:calc(100vh - 80px);right:10px;bottom:10px;border-radius:14px}.chat-selector{width:calc(100vw - 20px);right:10px}}
 
 /* ---- Advanced functional mockup additions ---- */
 .otp-grid{display:grid;grid-template-columns:repeat(6,44px);gap:8px;justify-content:center;margin:20px 0}
@@ -853,6 +926,53 @@ a{color:inherit;text-decoration:none}
     </div>
   </main>
 </section>
+
+<!-- CHATBOT SUPPORT -->
+<div class="chat-fab" id="chatFab" onclick="toggleChatSelector()">
+  <div class="chat-fab-label"><span>24/7 support</span>For your future</div>
+  <button class="chat-fab-btn">💬</button>
+</div>
+
+<div class="chat-selector" id="chatSelector">
+  <div class="chat-selector-head">
+    <h3>Hi there! 👋</h3>
+    <p>Choose your preferred support channel to get started instantly.</p>
+    <div class="cs-close" onclick="toggleChatSelector()">×</div>
+  </div>
+  <div class="chat-selector-options">
+    <div class="chat-platform" onclick="openChatWindow('whatsapp')">
+      <div class="chat-platform-icon whatsapp">📱</div>
+      <div class="chat-platform-info"><b>WhatsApp</b><span>Chat on WhatsApp Web</span></div>
+      <span class="chat-platform-arrow">→</span>
+    </div>
+    <div class="chat-platform" onclick="openChatWindow('messenger')">
+      <div class="chat-platform-icon messenger">💬</div>
+      <div class="chat-platform-info"><b>Messenger</b><span>Chat on Messenger</span></div>
+      <span class="chat-platform-arrow">→</span>
+    </div>
+    <div class="chat-platform" onclick="openChatWindow('inchat')">
+      <div class="chat-platform-icon inchat">🏦</div>
+      <div class="chat-platform-info"><b>HEI In-Chat Support</b><span>Direct chat with our team</span></div>
+      <span class="chat-platform-arrow">→</span>
+    </div>
+  </div>
+</div>
+
+<div class="chat-window" id="chatWindow">
+  <div class="chat-window-head" id="chatWindowHead">
+    <div class="chat-window-avatar" id="chatAvatar">HEI</div>
+    <div class="chat-window-head-info">
+      <b id="chatTitle">HEI Support</b>
+      <span id="chatSubtitle">Online • Typically replies instantly</span>
+    </div>
+    <div class="chat-window-close" onclick="closeChatWindow()">×</div>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-input-bar">
+    <input type="text" id="chatInput" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendChatMsg()">
+    <button onclick="sendChatMsg()">↑</button>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -1953,6 +2073,432 @@ function showNewAccountSuccess(destination){
 document.addEventListener('DOMContentLoaded',()=>{
  try{renderInvestorView('overview')}catch(e){console.error(e)}
 });
+
+/* ======== CHATBOT SUPPORT ENGINE ======== */
+let chatPlatform = 'inchat';
+let chatState = 'idle';
+let chatData = {};
+
+function toggleChatSelector(){
+  const sel=document.getElementById('chatSelector');
+  const fab=document.getElementById('chatFab');
+  if(sel.classList.contains('show')){sel.classList.remove('show');fab.style.display='flex';}
+  else{sel.classList.add('show');fab.style.display='none';}
+}
+
+function openChatWindow(platform){
+  chatPlatform = platform;
+  document.getElementById('chatSelector').classList.remove('show');
+  document.getElementById('chatFab').style.display='none';
+  const win=document.getElementById('chatWindow');
+  const head=document.getElementById('chatWindowHead');
+  const body=document.getElementById('chatBody');
+  const avatar=document.getElementById('chatAvatar');
+  const title=document.getElementById('chatTitle');
+  const sub=document.getElementById('chatSubtitle');
+  head.className='chat-window-head '+platform;
+  body.className='chat-body '+platform;
+  body.innerHTML='';
+  chatState='idle'; chatData={};
+  if(platform==='whatsapp'){title.textContent='HEI Support';sub.textContent='online';avatar.textContent='HEI';}
+  else if(platform==='messenger'){title.textContent='HEI Investment';sub.textContent='Active now';avatar.textContent='HEI';}
+  else{title.textContent='HEI Support';sub.textContent='Online • Typically replies instantly';avatar.textContent='HEI';}
+  win.classList.add('show');
+  setTimeout(()=>startChat(),500);
+}
+
+function closeChatWindow(){
+  document.getElementById('chatWindow').classList.remove('show');
+  document.getElementById('chatFab').style.display='flex';
+  chatState='idle'; chatData={};
+}
+
+function chatTime(){
+  const d=new Date();
+  return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+}
+
+function addBotMsg(text,delay=600){
+  const body=document.getElementById('chatBody');
+  const typing=document.createElement('div');
+  typing.className='chat-typing';
+  typing.innerHTML='<i></i><i></i><i></i>';
+  body.appendChild(typing);
+  body.scrollTop=body.scrollHeight;
+  return new Promise(r=>{
+    setTimeout(()=>{
+      typing.remove();
+      const msg=document.createElement('div');
+      msg.className='chat-msg '+chatPlatform+' bot';
+      msg.innerHTML=text+'<div class="chat-msg-time">'+chatTime()+'</div>';
+      body.appendChild(msg);
+      body.scrollTop=body.scrollHeight;
+      r();
+    },delay);
+  });
+}
+
+function addUserMsg(text){
+  const body=document.getElementById('chatBody');
+  const msg=document.createElement('div');
+  msg.className='chat-msg '+chatPlatform+' user';
+  msg.innerHTML=text+'<div class="chat-msg-time">'+chatTime()+'</div>';
+  body.appendChild(msg);
+  body.scrollTop=body.scrollHeight;
+}
+
+function addOptions(opts){
+  const body=document.getElementById('chatBody');
+  const wrap=document.createElement('div');
+  wrap.className='chat-options';
+  opts.forEach(o=>{
+    const btn=document.createElement('button');
+    btn.className='chat-option-btn';
+    btn.textContent=o.label;
+    btn.onclick=()=>{wrap.remove();addUserMsg(o.label);o.action();}
+    wrap.appendChild(btn);
+  });
+  body.appendChild(wrap);
+  body.scrollTop=body.scrollHeight;
+}
+
+function addReceipt(data){
+  const body=document.getElementById('chatBody');
+  const r=document.createElement('div');
+  r.className='chat-receipt';
+  let rows=data.rows.map(x=>'<div class="cr-row"><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('');
+  r.innerHTML='<b>'+data.title+'</b>'+rows;
+  body.appendChild(r);
+  body.scrollTop=body.scrollHeight;
+}
+
+function sendChatMsg(){
+  const inp=document.getElementById('chatInput');
+  const val=inp.value.trim();
+  if(!val)return;
+  inp.value='';
+  addUserMsg(val);
+  handleFreeText(val);
+}
+
+async function startChat(){
+  await addBotMsg('Hi there! 👋 Welcome to <b>HEI Investment Support</b>.',700);
+  await addBotMsg('I\'m your digital assistant. How can I help you today?',600);
+  showMainMenu();
+}
+
+function showMainMenu(){
+  addOptions([
+    {label:'📈 Start a new SIP', action:()=>flowNewSip()},
+    {label:'💳 Pay my SIP due', action:()=>flowPaySipDue()},
+    {label:'💰 New lump sum investment', action:()=>flowLumpSum()},
+    {label:'📉 Sell my investments', action:()=>flowSell()},
+    {label:'📊 Check my portfolio', action:()=>flowPortfolio()},
+    {label:'❓ Other enquiry', action:()=>flowOther()}
+  ]);
+}
+
+/* ---- FLOW: NEW SIP ---- */
+async function flowNewSip(){
+  chatState='newSip';
+  chatData={fund:'',amount:0};
+  await addBotMsg('Great choice! A monthly SIP helps you build wealth consistently. 🎯',600);
+  await addBotMsg('Which fund would you like to invest in?',500);
+  addOptions([
+    {label:'HEI Equity Growth Fund (High growth)', action:()=>{chatData.fund='HEI Equity Growth Fund';sipAskAmount();}},
+    {label:'HEI Balanced Fund (Moderate)', action:()=>{chatData.fund='HEI Balanced Fund';sipAskAmount();}},
+    {label:'HEI Income Fund (Stable)', action:()=>{chatData.fund='HEI Income Fund';sipAskAmount();}}
+  ]);
+}
+
+async function sipAskAmount(){
+  await addBotMsg('Good pick! 👍 <b>'+chatData.fund+'</b>',500);
+  await addBotMsg('How much would you like to invest monthly?',500);
+  addOptions([
+    {label:'Rs. 1,000',action:()=>{chatData.amount=1000;sipConfirm();}},
+    {label:'Rs. 2,500',action:()=>{chatData.amount=2500;sipConfirm();}},
+    {label:'Rs. 5,000',action:()=>{chatData.amount=5000;sipConfirm();}},
+    {label:'Rs. 10,000',action:()=>{chatData.amount=10000;sipConfirm();}},
+    {label:'Rs. 25,000',action:()=>{chatData.amount=25000;sipConfirm();}}
+  ]);
+}
+
+async function sipConfirm(){
+  await addBotMsg('Here\'s your SIP summary:',500);
+  addReceipt({title:'📋 New SIP Order',rows:[
+    ['Fund',chatData.fund],['Monthly Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],
+    ['Deduction','1st of every month'],['Payment','connectIPS QR']
+  ]});
+  await addBotMsg('Shall I proceed with this SIP?',500);
+  addOptions([
+    {label:'✅ Confirm SIP',action:()=>sipVerifyOtp()},
+    {label:'✏️ Change details',action:()=>flowNewSip()},
+    {label:'❌ Cancel',action:()=>backToMenu()}
+  ]);
+}
+
+async function sipVerifyOtp(){
+  await addBotMsg('For security, I\'ve sent a 6-digit OTP to your registered mobile number <b>9800••••00</b>.',600);
+  await addBotMsg('Please enter the OTP (use <b>482913</b> for demo):',400);
+  chatState='sipOtp';
+}
+
+async function sipComplete(){
+  await addBotMsg('OTP verified! ✅',500);
+  await addBotMsg('Processing your SIP registration...',700);
+  const s=getInvestorState();
+  const fundCode=chatData.fund.includes('Equity')?'HEI-EGF':chatData.fund.includes('Balanced')?'HEI-BF':'HEI-IF';
+  s.sips.push({fund:chatData.fund,amount:chatData.amount,frequency:'Monthly',status:'Active',nextDue:'01 Sep 2026'});
+  s.transactions.unshift({id:'HEI-TXN-'+String(5100+Math.floor(Math.random()*200)),date:'07 Aug 2026',type:'SIP',channel:'Chat Support',fund:chatData.fund,amount:chatData.amount,status:'Completed'});
+  const h=s.holdings.find(x=>x.code===fundCode);
+  if(h){const units=chatData.amount/h.nav;h.units+=units;h.invested+=chatData.amount;h.wacc=h.invested/h.units;}
+  saveInvestorState(s);
+  await addBotMsg('🎉 <b>SIP registered successfully!</b>',600);
+  addReceipt({title:'✅ SIP Confirmation',rows:[
+    ['Reference','HEI-SIP-'+String(3000+Math.floor(Math.random()*500))],
+    ['Fund',chatData.fund],['Monthly Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],
+    ['Status','Active'],['Next Due','01 Sep 2026']
+  ]});
+  await addBotMsg('Your SIP is now active! Units will be allocated at the applicable NAV each month. 📊',600);
+  askAnythingElse();
+}
+
+/* ---- FLOW: PAY SIP DUE ---- */
+async function flowPaySipDue(){
+  chatState='paySip';
+  const s=getInvestorState();
+  const dueSips=s.sips.filter(x=>x.status==='Active');
+  if(dueSips.length===0){
+    await addBotMsg('You don\'t have any active SIPs at the moment.',500);
+    askAnythingElse();return;
+  }
+  await addBotMsg('You have <b>'+dueSips.length+'</b> active SIP(s):',500);
+  dueSips.forEach((sip,i)=>{
+    addReceipt({title:'SIP #'+(i+1),rows:[['Fund',sip.fund],['Amount','Rs. '+sip.amount.toLocaleString('en-IN')],['Next Due',sip.nextDue||'01 Sep 2026']]});
+  });
+  const total=dueSips.reduce((a,x)=>a+x.amount,0);
+  chatData.dueAmount=total;chatData.dueSips=dueSips;
+  await addBotMsg('Total due: <b>Rs. '+total.toLocaleString('en-IN')+'</b>',500);
+  await addBotMsg('Would you like to pay now?',400);
+  addOptions([
+    {label:'💳 Pay Rs. '+total.toLocaleString('en-IN')+' now',action:()=>paySipProcess()},
+    {label:'🔙 Back to menu',action:()=>backToMenu()}
+  ]);
+}
+
+async function paySipProcess(){
+  await addBotMsg('Generating connectIPS QR for payment of <b>Rs. '+chatData.dueAmount.toLocaleString('en-IN')+'</b>...',700);
+  await addBotMsg('📱 <b>connectIPS QR Ready</b>\n\nScan with your banking app to complete payment.\n\n<i>(In this demo, the payment will process automatically)</i>',800);
+  await addBotMsg('Processing payment... ⏳',1200);
+  const s=getInvestorState();
+  chatData.dueSips.forEach(sip=>{
+    const h=s.holdings.find(x=>x.name===sip.fund);
+    if(h){const units=sip.amount/h.nav;h.units+=units;h.invested+=sip.amount;h.wacc=h.invested/h.units;}
+    s.transactions.unshift({id:'HEI-TXN-'+String(5200+Math.floor(Math.random()*200)),date:'07 Aug 2026',type:'SIP',channel:'Chat Payment',fund:sip.fund,amount:sip.amount,status:'Completed'});
+  });
+  saveInvestorState(s);
+  await addBotMsg('✅ <b>Payment successful!</b>',600);
+  addReceipt({title:'🧾 Payment Receipt',rows:[
+    ['Reference','HEI-PAY-'+String(8000+Math.floor(Math.random()*500))],
+    ['Amount','Rs. '+chatData.dueAmount.toLocaleString('en-IN')],
+    ['Method','connectIPS QR'],['Status','Completed'],['Date','07 Aug 2026']
+  ]});
+  await addBotMsg('Units have been allocated at today\'s NAV. You can check your updated portfolio anytime! 🎉',600);
+  askAnythingElse();
+}
+
+/* ---- FLOW: LUMP SUM ---- */
+async function flowLumpSum(){
+  chatState='lumpSum';
+  chatData={fund:'',amount:0};
+  await addBotMsg('A one-time lump sum investment is a great way to deploy capital! 💪',600);
+  await addBotMsg('Which fund would you like to invest in?',500);
+  addOptions([
+    {label:'HEI Equity Growth Fund (High growth)',action:()=>{chatData.fund='HEI Equity Growth Fund';lumpAskAmount();}},
+    {label:'HEI Balanced Fund (Moderate)',action:()=>{chatData.fund='HEI Balanced Fund';lumpAskAmount();}},
+    {label:'HEI Income Fund (Stable)',action:()=>{chatData.fund='HEI Income Fund';lumpAskAmount();}}
+  ]);
+}
+
+async function lumpAskAmount(){
+  await addBotMsg('Selected: <b>'+chatData.fund+'</b> ✓',400);
+  await addBotMsg('How much would you like to invest?',500);
+  addOptions([
+    {label:'Rs. 5,000',action:()=>{chatData.amount=5000;lumpConfirm();}},
+    {label:'Rs. 10,000',action:()=>{chatData.amount=10000;lumpConfirm();}},
+    {label:'Rs. 25,000',action:()=>{chatData.amount=25000;lumpConfirm();}},
+    {label:'Rs. 50,000',action:()=>{chatData.amount=50000;lumpConfirm();}},
+    {label:'Rs. 1,00,000',action:()=>{chatData.amount=100000;lumpConfirm();}}
+  ]);
+}
+
+async function lumpConfirm(){
+  await addBotMsg('Your investment summary:',500);
+  addReceipt({title:'📋 Lump Sum Order',rows:[
+    ['Fund',chatData.fund],['Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],
+    ['Type','One-time Investment'],['Payment','connectIPS QR']
+  ]});
+  await addBotMsg('Ready to proceed?',400);
+  addOptions([
+    {label:'✅ Confirm & Pay',action:()=>lumpProcess()},
+    {label:'✏️ Change details',action:()=>flowLumpSum()},
+    {label:'❌ Cancel',action:()=>backToMenu()}
+  ]);
+}
+
+async function lumpProcess(){
+  await addBotMsg('Generating connectIPS QR for <b>Rs. '+chatData.amount.toLocaleString('en-IN')+'</b>...',700);
+  await addBotMsg('Processing payment... ⏳',1200);
+  const s=getInvestorState();
+  const fundCode=chatData.fund.includes('Equity')?'HEI-EGF':chatData.fund.includes('Balanced')?'HEI-BF':'HEI-IF';
+  const h=s.holdings.find(x=>x.code===fundCode);
+  if(h){const units=chatData.amount/h.nav;h.units+=units;h.invested+=chatData.amount;h.wacc=h.invested/h.units;}
+  s.transactions.unshift({id:'HEI-TXN-'+String(5300+Math.floor(Math.random()*200)),date:'07 Aug 2026',type:'Lump Sum',channel:'Chat Support',fund:chatData.fund,amount:chatData.amount,status:'Completed'});
+  saveInvestorState(s);
+  await addBotMsg('🎉 <b>Investment completed!</b>',600);
+  addReceipt({title:'✅ Investment Confirmation',rows:[
+    ['Reference','HEI-TXN-'+String(5300+Math.floor(Math.random()*200))],
+    ['Fund',chatData.fund],['Amount','Rs. '+chatData.amount.toLocaleString('en-IN')],
+    ['Units','At today\'s NAV'],['Status','Completed']
+  ]});
+  await addBotMsg('Units have been allocated. Check your portfolio to see the updated holdings! 📊',600);
+  askAnythingElse();
+}
+
+/* ---- FLOW: SELL ---- */
+async function flowSell(){
+  chatState='sell';
+  const s=getInvestorState();
+  if(s.holdings.length===0){
+    await addBotMsg('You don\'t have any holdings to sell at the moment.',500);
+    askAnythingElse();return;
+  }
+  await addBotMsg('Here are your current holdings:',500);
+  s.holdings.forEach(h=>{
+    addReceipt({title:h.name,rows:[
+      ['Units',h.units.toFixed(4)],['NAV','Rs. '+h.nav.toFixed(2)],
+      ['Current Value','Rs. '+(h.units*h.nav).toLocaleString('en-IN',{maximumFractionDigits:0})]
+    ]});
+  });
+  await addBotMsg('Which fund would you like to sell from?',500);
+  addOptions(s.holdings.map(h=>({
+    label:h.name,
+    action:()=>{chatData.sellFund=h;sellAskAmount();}
+  })));
+}
+
+async function sellAskAmount(){
+  const h=chatData.sellFund;
+  const val=Math.round(h.units*h.nav);
+  await addBotMsg('Selected: <b>'+h.name+'</b>\nCurrent value: <b>Rs. '+val.toLocaleString('en-IN')+'</b>',500);
+  await addBotMsg('How much would you like to redeem?',400);
+  const half=Math.round(val/2);
+  const quarter=Math.round(val/4);
+  addOptions([
+    {label:'Rs. '+quarter.toLocaleString('en-IN')+' (25%)',action:()=>{chatData.sellAmount=quarter;sellConfirm();}},
+    {label:'Rs. '+half.toLocaleString('en-IN')+' (50%)',action:()=>{chatData.sellAmount=half;sellConfirm();}},
+    {label:'Rs. '+val.toLocaleString('en-IN')+' (Full)',action:()=>{chatData.sellAmount=val;sellConfirm();}},
+    {label:'🔙 Back',action:()=>backToMenu()}
+  ]);
+}
+
+async function sellConfirm(){
+  await addBotMsg('Redemption summary:',500);
+  addReceipt({title:'📋 Redemption Order',rows:[
+    ['Fund',chatData.sellFund.name],['Redemption','Rs. '+chatData.sellAmount.toLocaleString('en-IN')],
+    ['Settlement','T+2 business days'],['Credit To','Registered bank account']
+  ]});
+  await addBotMsg('Proceed with this redemption?',400);
+  addOptions([
+    {label:'✅ Confirm Sell',action:()=>sellProcess()},
+    {label:'❌ Cancel',action:()=>backToMenu()}
+  ]);
+}
+
+async function sellProcess(){
+  await addBotMsg('Processing your redemption request... ⏳',1000);
+  const s=getInvestorState();
+  const h=s.holdings.find(x=>x.code===chatData.sellFund.code);
+  if(h){
+    const unitsToSell=chatData.sellAmount/h.nav;
+    h.units=Math.max(0,h.units-unitsToSell);
+    h.invested=Math.max(0,h.invested-chatData.sellAmount);
+    if(h.units>0)h.wacc=h.invested/h.units;
+  }
+  s.transactions.unshift({id:'HEI-TXN-'+String(5400+Math.floor(Math.random()*200)),date:'07 Aug 2026',type:'Redemption',channel:'Chat Support',fund:chatData.sellFund.name,amount:chatData.sellAmount,status:'Processing'});
+  saveInvestorState(s);
+  await addBotMsg('✅ <b>Redemption order placed!</b>',600);
+  addReceipt({title:'🧾 Redemption Confirmation',rows:[
+    ['Reference','HEI-RED-'+String(2000+Math.floor(Math.random()*500))],
+    ['Fund',chatData.sellFund.name],['Amount','Rs. '+chatData.sellAmount.toLocaleString('en-IN')],
+    ['Status','Processing (T+2)'],['Credit To','Registered bank']
+  ]});
+  await addBotMsg('The amount will be credited to your registered bank account within 2 business days. 🏦',600);
+  askAnythingElse();
+}
+
+/* ---- FLOW: PORTFOLIO ---- */
+async function flowPortfolio(){
+  const s=getInvestorState();
+  const totals=s.holdings.reduce((a,h)=>({invested:a.invested+h.invested,current:a.current+(h.units*h.nav)}),{invested:0,current:0});
+  const gain=totals.current-totals.invested;
+  const ret=totals.invested>0?(gain/totals.invested*100):0;
+  await addBotMsg('Here\'s your portfolio snapshot: 📊',600);
+  addReceipt({title:'💼 Portfolio Overview',rows:[
+    ['Total Invested','Rs. '+totals.invested.toLocaleString('en-IN',{maximumFractionDigits:0})],
+    ['Current Value','Rs. '+totals.current.toLocaleString('en-IN',{maximumFractionDigits:0})],
+    ['Gain/Loss',(gain>=0?'+':'')+' Rs. '+Math.abs(gain).toLocaleString('en-IN',{maximumFractionDigits:0})],
+    ['Return',(ret>=0?'+':'')+ret.toFixed(2)+'%'],
+    ['Holdings',s.holdings.length+' funds'],
+    ['Active SIPs',s.sips.filter(x=>x.status==='Active').length]
+  ]});
+  s.holdings.forEach(h=>{
+    addReceipt({title:h.name+' ('+h.code+')',rows:[
+      ['Units',h.units.toFixed(4)],['NAV','Rs. '+h.nav.toFixed(2)],
+      ['Value','Rs. '+(h.units*h.nav).toLocaleString('en-IN',{maximumFractionDigits:0})]
+    ]});
+  });
+  askAnythingElse();
+}
+
+/* ---- FLOW: OTHER ---- */
+async function flowOther(){
+  await addBotMsg('No problem! You can reach our support team at:',500);
+  await addBotMsg('📞 <b>01-4XXXXXX</b> (Office hours)\n📧 <b>support@hei.com.np</b>\n🏢 Durbar Marg, Kathmandu',600);
+  await addBotMsg('Or describe your question here and I\'ll try to help!',400);
+  chatState='freeChat';
+}
+
+/* ---- UTILITIES ---- */
+async function askAnythingElse(){
+  await addBotMsg('Is there anything else I can help you with?',500);
+  showMainMenu();
+}
+
+async function backToMenu(){
+  await addBotMsg('No problem! What else can I help you with?',400);
+  chatState='idle';
+  showMainMenu();
+}
+
+function handleFreeText(text){
+  const lower=text.toLowerCase();
+  if(chatState==='sipOtp'){
+    if(text==='482913'||text.length===6){sipComplete();}
+    else{addBotMsg('That doesn\'t look right. Try <b>482913</b> for the demo OTP.',500);}
+    return;
+  }
+  if(lower.includes('sip')&&(lower.includes('new')||lower.includes('start'))){flowNewSip();return;}
+  if(lower.includes('pay')&&lower.includes('sip')){flowPaySipDue();return;}
+  if(lower.includes('lump')||lower.includes('one-time')||lower.includes('onetime')){flowLumpSum();return;}
+  if(lower.includes('sell')||lower.includes('redeem')){flowSell();return;}
+  if(lower.includes('portfolio')||lower.includes('balance')||lower.includes('holdings')){flowPortfolio();return;}
+  if(lower.includes('hello')||lower.includes('hi')||lower.includes('hey')){
+    addBotMsg('Hello! 😊 How can I help you today?',400).then(()=>showMainMenu());return;
+  }
+  addBotMsg('Thanks for your message! Let me help you with one of these options:',500).then(()=>showMainMenu());
+}
+
 </script>
 
 </body>
