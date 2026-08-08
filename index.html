@@ -301,8 +301,8 @@ a{color:inherit;text-decoration:none}
 .table td{font-size:10px;padding:10px 8px;border-bottom:1px solid #edf0f2;color:#344953}
 .table tr:last-child td{border-bottom:0}
 
-.collector-wrap{max-width:1180px;margin:0 auto}
-.collector-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:13px;margin-top:15px}
+.partner-wrap{max-width:1180px;margin:0 auto}
+.partner-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:13px;margin-top:15px}
 .search-row{display:flex;gap:8px}
 .search-row input{flex:1;height:40px;border:1px solid #ccd7dd;border-radius:9px;padding:0 11px}
 .customer-item{border-top:1px solid var(--line);padding:12px 0;display:flex;justify-content:space-between;gap:14px;align-items:center}
@@ -352,7 +352,7 @@ a{color:inherit;text-decoration:none}
   .public-header .inner{grid-template-columns:1fr auto} .main-nav{display:none} .header-actions{grid-column:2}
   .hero-inner{grid-template-columns:1fr;gap:35px} .feature-grid{grid-template-columns:1fr 1fr}
   .fund-grid{grid-template-columns:1fr} .remit-shell{grid-template-columns:1fr} .remit-demo{border-left:0;border-top:1px solid var(--line)}
-  .app-layout{grid-template-columns:180px 1fr} .dashboard-grid,.collector-grid{grid-template-columns:1fr}
+  .app-layout{grid-template-columns:180px 1fr} .dashboard-grid,.partner-grid{grid-template-columns:1fr}
   .kpi-grid{grid-template-columns:1fr 1fr} .partner-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:700px){
@@ -507,18 +507,18 @@ a{color:inherit;text-decoration:none}
 .account-option p{font-size:9px;color:#748188;line-height:1.5;margin:0}
 .account-option.red .account-icon{background:#fff0ef;color:#c00301}
 
-.collector-nav{width:100%;border:0;background:transparent;text-align:left}
-.collector-toolbar{display:flex;gap:7px;flex-wrap:wrap}
-.collector-toolbar .btn{font-size:9px;padding:8px 10px}
-.collector-list{display:grid;gap:8px}
-.collector-person{border:1px solid #e1e8eb;border-radius:12px;background:#fff;padding:13px;display:grid;grid-template-columns:1.2fr .8fr auto;gap:10px;align-items:center}
-.collector-person h4{font-size:11px;color:#284652;margin:0 0 4px}
-.collector-person p{font-size:8px;color:#849198;margin:0}
-.collector-person .portfolio-meta span{display:block;font-size:8px;color:#8a979d}
-.collector-person .portfolio-meta b{display:block;font-size:10px;color:#3b535d;margin-top:3px}
-.collector-view-title{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:16px}
-.collector-view-title h1{font-size:25px;color:#123d4d;margin:4px 0 4px}
-.collector-view-title p{font-size:10px;color:#7d8b92;margin:0}
+.partner-nav{width:100%;border:0;background:transparent;text-align:left}
+.partner-toolbar{display:flex;gap:7px;flex-wrap:wrap}
+.partner-toolbar .btn{font-size:9px;padding:8px 10px}
+.partner-list{display:grid;gap:8px}
+.partner-person{border:1px solid #e1e8eb;border-radius:12px;background:#fff;padding:13px;display:grid;grid-template-columns:1.2fr .8fr auto;gap:10px;align-items:center}
+.partner-person h4{font-size:11px;color:#284652;margin:0 0 4px}
+.partner-person p{font-size:8px;color:#849198;margin:0}
+.partner-person .portfolio-meta span{display:block;font-size:8px;color:#8a979d}
+.partner-person .portfolio-meta b{display:block;font-size:10px;color:#3b535d;margin-top:3px}
+.partner-view-title{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:16px}
+.partner-view-title h1{font-size:25px;color:#123d4d;margin:4px 0 4px}
+.partner-view-title p{font-size:10px;color:#7d8b92;margin:0}
 .filter-row{display:flex;gap:6px;flex-wrap:wrap}
 .filter-chip{border:1px solid #d7e1e5;background:#fff;border-radius:999px;padding:6px 9px;font-size:8px;color:#677880;font-weight:700}
 .filter-chip.active{border-color:#91b8c8;background:#f3f9fb;color:#166283}
@@ -579,7 +579,7 @@ a{color:inherit;text-decoration:none}
   .otp-grid{grid-template-columns:repeat(6,38px);gap:5px}.otp-grid input{width:38px;height:44px}
   .kyc-source,.account-choice,.lumpsum-form,.remit-hero-box{grid-template-columns:1fr}
   .doc-grid{grid-template-columns:1fr 1fr}
-  .collector-person{grid-template-columns:1fr auto}.collector-person .portfolio-meta{display:none}
+  .partner-person{grid-template-columns:1fr auto}.partner-person .portfolio-meta{display:none}
   .action-grid{grid-template-columns:1fr 1fr}
   .remit-partner-list{grid-template-columns:1fr 1fr}
   .remit-pipeline{grid-template-columns:1fr}.pipe-arrow{transform:rotate(90deg);text-align:center}
@@ -738,16 +738,12 @@ a{color:inherit;text-decoration:none}
   <div class="clean-nav">
     <a class="clean-brand" href="#home">
       <div class="clean-logo">
-        <svg viewBox="0 0 48 48" aria-hidden="true">
-          <path d="M7 31.5 16.7 18l6.2 9.3L29.2 15 41 31.5" fill="none" stroke="#166283" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="m27.8 17.7 1.4-2.7 2.4 3.7" fill="none" stroke="#c00301" stroke-width="3.3" stroke-linecap="round"/>
-          <path d="M8.5 35.5h31" stroke="#166283" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
+        <img src="logo.webp" alt="HEI Logo" style="width:100%;height:100%;object-fit:contain;">
       </div>
       <div class="clean-brand-copy"><strong>HEI</strong><span>Himalayan Everest Investment</span></div>
     </a>
     <nav class="clean-links"><a href="#funds">Funds</a><a href="#ways">Invest</a><a href="#remit">RemitInvest</a></nav>
-    <div class="clean-actions"><button class="clean-link-btn" onclick="openCollectorLogin()">Collector Login</button><button class="clean-login-btn" onclick="openInvestorLogin()">Customer Login</button></div>
+    <div class="clean-actions"><button class="clean-link-btn" onclick="openPartnerLogin()">Partner Login</button><button class="clean-login-btn" onclick="openInvestorLogin()">Customer Login</button></div>
   </div>
 </header>
 
@@ -771,7 +767,7 @@ a{color:inherit;text-decoration:none}
   <div class="clean-section-head"><span>Choose your route</span><h2>Same portfolio. Different ways in.</h2></div>
   <div class="route-grid">
     <button class="route-card" onclick="startOnboarding()"><div class="route-top"><span class="route-no">01</span><span class="route-arrow">↗</span></div><h3>Invest online</h3><p>Open the account and start a SIP.</p><div class="route-meta">OTP · KYC · Pay</div></button>
-    <button class="route-card" onclick="openCollectorLogin()"><div class="route-top"><span class="route-no">02</span><span class="route-arrow">↗</span></div><h3>With a collector</h3><p>Onboarding and SIP collection in the field.</p><div class="route-meta">Search · QR · Receipt</div></button>
+    <button class="route-card" onclick="openPartnerLogin()"><div class="route-top"><span class="route-no">02</span><span class="route-arrow">↗</span></div><h3>With a partner</h3><p>Onboarding and SIP collection in the field.</p><div class="route-meta">Search · QR · Receipt</div></button>
     <button class="route-card route-red" onclick="openRemittance()"><div class="route-top"><span class="route-no">03</span><span class="route-arrow">↗</span></div><h3>From abroad</h3><p>Split a remittance between home and investment.</p><div class="route-meta">Remit · Split · Invest</div></button>
   </div>
 </section>
@@ -811,7 +807,7 @@ a{color:inherit;text-decoration:none}
   <header class="app-top investor-topbar">
     <div class="hei-mark">
       <div class="logo-box" style="width:34px;height:34px;flex-basis:34px">
-        <svg viewBox="0 0 48 48"><rect width="48" height="48" rx="11" fill="#fff" stroke="#d7e3e8"/><path d="M8 31 L17 18 L23 27 L29 15 L40 31" fill="none" stroke="#166283" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M27.6 17.1 L29 15 L31.2 18" fill="none" stroke="#c00301" stroke-width="3.2" stroke-linecap="round"/><path d="M9 35 H39" stroke="#166283" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <img src="logo.webp" alt="HEI Logo" style="width:100%;height:100%;object-fit:contain;">
       </div>
       <div class="brand-copy"><b>HEI Customer Portal</b><span>Aarav Poudel • HEI-CUS-10045</span></div>
     </div>
@@ -845,43 +841,38 @@ a{color:inherit;text-decoration:none}
   </div>
 </section>
 
-<!-- COLLECTOR APP -->
-<section class="app-screen" id="collectorApp">
+<!-- PARTNER APP -->
+<section class="app-screen" id="partnerApp">
   <header class="app-top">
     <div class="hei-mark">
       <div class="logo-box" style="width:34px;height:34px;flex-basis:34px">
-        <svg viewBox="0 0 48 48">
-          <rect width="48" height="48" rx="11" fill="#fff" stroke="#d7e3e8"/>
-          <path d="M8 31 L17 18 L23 27 L29 15 L40 31" fill="none" stroke="#166283" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M27.6 17.1 L29 15 L31.2 18" fill="none" stroke="#c00301" stroke-width="3.2" stroke-linecap="round"/>
-          <path d="M9 35 H39" stroke="#166283" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
+        <img src="logo.webp" alt="HEI Logo" style="width:100%;height:100%;object-fit:contain;">
       </div>
-      <div class="brand-copy"><b>HEI Collector Portal</b><span>Ram Bahadur Thapa • COL-001 • Baneshwor Zone</span></div>
+      <div class="brand-copy"><b>HEI Partner Portal</b><span>Ram Bahadur Thapa • COL-001 • Baneshwor Zone</span></div>
     </div>
     <div style="display:flex;gap:7px;align-items:center">
-      <button class="btn btn-outline" onclick="openCollectorQuickCollect()">+ Collect Lump Sum</button>
-      <button class="btn btn-text" onclick="closeApp('collectorApp')">&larr; Back to Home</button>
+      <button class="btn btn-outline" onclick="openPartnerQuickCollect()">+ Collect Lump Sum</button>
+      <button class="btn btn-text" onclick="closeApp('partnerApp')">&larr; Back to Home</button>
     </div>
   </header>
   <div class="app-layout">
-    <aside class="app-side" id="collectorSidebar">
+    <aside class="app-side" id="partnerSidebar">
       <div class="side-group">Workday</div>
-      <button class="collector-nav side-link active" data-view="dashboard" onclick="renderCollectorView('dashboard',this)">Dashboard</button>
-      <button class="collector-nav side-link" data-view="customers" onclick="renderCollectorView('customers',this)">My Customers <span>248</span></button>
-      <button class="collector-nav side-link" data-view="collections" onclick="renderCollectorView('collections',this)">Collections</button>
-      <button class="collector-nav side-link" data-view="newclient" onclick="renderCollectorView('newclient',this)">New Client</button>
-      <button class="collector-nav side-link" data-view="lumpsum" onclick="renderCollectorView('lumpsum',this)">Collect Lump Sum</button>
+      <button class="partner-nav side-link active" data-view="dashboard" onclick="renderPartnerView('dashboard',this)">Dashboard</button>
+      <button class="partner-nav side-link" data-view="customers" onclick="renderPartnerView('customers',this)">My Customers <span>248</span></button>
+      <button class="partner-nav side-link" data-view="collections" onclick="renderPartnerView('collections',this)">Collections</button>
+      <button class="partner-nav side-link" data-view="newclient" onclick="renderPartnerView('newclient',this)">New Client</button>
+      <button class="partner-nav side-link" data-view="lumpsum" onclick="renderPartnerView('lumpsum',this)">Collect Lump Sum</button>
 
       <div class="side-group">Performance</div>
-      <button class="collector-nav side-link" data-view="report" onclick="renderCollectorView('report',this)">My Report</button>
-      <button class="collector-nav side-link" data-view="receipts" onclick="renderCollectorView('receipts',this)">Receipts</button>
+      <button class="partner-nav side-link" data-view="report" onclick="renderPartnerView('report',this)">My Report</button>
+      <button class="partner-nav side-link" data-view="receipts" onclick="renderPartnerView('receipts',this)">Receipts</button>
 
       <div class="side-group">Account</div>
-      <button class="collector-nav side-link" data-view="profile" onclick="renderCollectorView('profile',this)">Profile</button>
-      <button class="collector-nav side-link" data-view="support" onclick="renderCollectorView('support',this)">Support</button>
+      <button class="partner-nav side-link" data-view="profile" onclick="renderPartnerView('profile',this)">Profile</button>
+      <button class="partner-nav side-link" data-view="support" onclick="renderPartnerView('support',this)">Support</button>
     </aside>
-    <main class="app-main" id="collectorMain"></main>
+    <main class="app-main" id="partnerMain"></main>
   </div>
 </section>
 
@@ -890,12 +881,7 @@ a{color:inherit;text-decoration:none}
   <header class="app-top">
     <div class="hei-mark">
       <div class="logo-box" style="width:34px;height:34px;flex-basis:34px">
-        <svg viewBox="0 0 48 48">
-          <rect width="48" height="48" rx="11" fill="#fff" stroke="#d7e3e8"/>
-          <path d="M8 31 L17 18 L23 27 L29 15 L40 31" fill="none" stroke="#166283" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M27.6 17.1 L29 15 L31.2 18" fill="none" stroke="#c00301" stroke-width="3.2" stroke-linecap="round"/>
-          <path d="M9 35 H39" stroke="#166283" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
+        <img src="logo.webp" alt="HEI Logo" style="width:100%;height:100%;object-fit:contain;">
       </div>
       <div class="brand-copy"><b>HEI RemitInvest</b><span>Convert part of every remittance into long-term investment</span></div>
     </div>
@@ -1017,7 +1003,7 @@ function downloadDummyPdf(filename){
 function closeApp(id){document.getElementById(id).classList.remove('show')}
 function toast(t){let el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200)}
 
-function logoMini(){return `<div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:7px;background:#eaf4f7;display:grid;place-items:center;color:#166283;font-weight:700;font-size:9px">HEI</div><div><b style="font-size:10px;color:#274652">Himalayan Everest Investment</b><div style="font-size:8px;color:#667085;margin-top:2px">Digital AMC prototype</div></div></div>`}
+function logoMini(){return `<div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;"><img src="logo.webp" alt="HEI" style="width:100%;height:100%;object-fit:contain;"></div><div><b style="font-size:10px;color:#274652">Himalayan Everest Investment</b><div style="font-size:8px;color:#667085;margin-top:2px">Digital AMC prototype</div></div></div>`}
 function progress(n){return `<div class="progress">${[1,2,3,4,5].map(x=>`<i class="${x<=n?'on':''}"></i>`).join('')}</div>`}
 
 function openInvestorLogin(){
@@ -1031,14 +1017,14 @@ function openInvestorLogin(){
     <div class="disclaimer">Demo credentials are pre-filled for presentation purposes. No authentication is performed.</div>
   `)
 }
-function openCollectorLogin(){
-  openModal('Collector Login','HEI field collection and onboarding portal',`
+function openPartnerLogin(){
+  openModal('Partner Login','HEI field collection and onboarding portal',`
     <div class="form-grid">
-      <div class="field full"><label>COLLECTOR ID</label><input value="COL-001"></div>
+      <div class="field full"><label>PARTNER ID</label><input value="COL-001"></div>
       <div class="field full"><label>PASSWORD</label><input type="password" value="demo1234"></div>
     </div>
-    <button class="btn btn-primary btn-block" style="margin-top:16px" onclick="openApp('collectorApp')">Sign in as Collector</button>
-    <div class="disclaimer">Mock portal for Board demonstration. Collector data and credentials are illustrative.</div>
+    <button class="btn btn-primary btn-block" style="margin-top:16px" onclick="openApp('partnerApp')">Sign in as Partner</button>
+    <div class="disclaimer">Mock portal for Board demonstration. Partner data and credentials are illustrative.</div>
   `)
 }
 function openSipCalculator(){
@@ -1090,7 +1076,7 @@ function renderOnboarding(){
 }
 
 function openSipPayment(){openConnectIpsPayment('Aarav Poudel',5000,'September SIP','portal')}
-function collectorPayment(name,amount){openConnectIpsPayment(name,amount,'Collector SIP Collection','collector')}
+function partnerPayment(name,amount){openConnectIpsPayment(name,amount,'Partner SIP Collection','partner')}
 function openConnectIpsPayment(name,amount,purpose,source){
  paymentSeconds=299;
  let body=`
@@ -1132,25 +1118,25 @@ function showPaymentSuccess(name,amount,purpose,source){
  let body=`<div class="success-state"><div class="success-icon">✓</div><h3>Payment confirmed</h3><div class="form-sub">Gateway confirmation received in this simulated flow.</div>
  <div class="receipt" id="receiptPrint"><div class="receipt-head">${logoMini()}<div style="text-align:right"><span class="badge green">PAID</span><div class="micro" style="margin-top:5px">HEI-RCP-82432</div></div></div>
  <div class="receipt-row"><span>Date & time</span><b>07 Aug 2026 • 19:04</b></div><div class="receipt-row"><span>Customer</span><b>${name}</b></div><div class="receipt-row"><span>Purpose</span><b>${purpose}</b></div><div class="receipt-row"><span>Payment method</span><b>connectIPS QR</b></div><div class="receipt-row"><span>Gateway reference</span><b>CIPS-982174512</b></div><div class="receipt-row"><span>Amount paid</span><b>${money(amount)}</b></div></div>
- <div class="modal-actions"><button class="btn btn-outline" onclick="window.print()">Print Receipt</button><button class="btn btn-primary" onclick="finishPayment('${source}')">${source==='collector'?'Next Customer':'Continue'}</button></div></div>`;
+ <div class="modal-actions"><button class="btn btn-outline" onclick="window.print()">Print Receipt</button><button class="btn btn-primary" onclick="finishPayment('${source}')">${source==='partner'?'Next Customer':'Continue'}</button></div></div>`;
  openModal('Payment Successful','Digital receipt generated automatically',body)
 }
 function finishPayment(source){
  if(source==='onboarding'){onboardStep=5;renderOnboarding()}
- else if(source==='collector'){closeModal();toast('Collection added to today’s total')}
+ else if(source==='partner'){closeModal();toast('Collection added to today’s total')}
  else{closeModal();toast('SIP payment posted to portfolio')}
 }
 
-function showCollectorCustomer(){
+function showPartnerCustomer(){
  openModal('Customer Detail','HEI-CUS-10045 • Aarav Poudel',`
    <div style="display:flex;justify-content:space-between;align-items:start;gap:15px"><div><div class="form-title" style="margin:0">Aarav Poudel</div><div class="form-sub" style="margin:4px 0">9800XXXX00 • Baneshwor, Kathmandu</div></div><span class="badge green">KYC VERIFIED</span></div>
    <div class="review-box"><div class="review-row"><span>Fund</span><b>HEI Equity Growth Fund</b></div><div class="review-row"><span>Monthly SIP</span><b>Rs. 5,000</b></div><div class="review-row"><span>Total invested</span><b>Rs. 100,000</b></div><div class="review-row"><span>Outstanding</span><b style="color:var(--hei-red)">Rs. 5,000 • 1 month</b></div></div>
-   <div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="collectorPayment('Aarav Poudel',5000)">Collect SIP</button></div>
+   <div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="partnerPayment('Aarav Poudel',5000)">Collect SIP</button></div>
  `)
 }
-function collectorNewClient(){
- openModal('New Client','Collector-assisted onboarding',`
-   <div class="form-title">Start with two details.</div><div class="form-sub">The collector can initiate the same simplified KYC and investment flow from the field.</div>
+function partnerNewClient(){
+ openModal('New Client','Partner-assisted onboarding',`
+   <div class="form-title">Start with two details.</div><div class="form-sub">The partner can initiate the same simplified KYC and investment flow from the field.</div>
    <div class="form-grid"><div class="field"><label>MOBILE</label><input value="9812345678"></div><div class="field"><label>FULL NAME</label><input value="Nisha Karki"></div></div>
    <div class="review-box"><div class="review-row"><span>Next</span><b>OTP → KYC → Fund → Payment</b></div><div class="review-row"><span>Target experience</span><b>Under 5 minutes</b></div></div>
    <button class="btn btn-primary btn-block" style="margin-top:14px" onclick="closeModal();startOnboarding()">Continue Onboarding</button>
@@ -1208,7 +1194,7 @@ window.heiDraftId = '';
 window.heiDraftPassword = '';
 window.heiLoginIntent = null;
 window.heiSelectedClient = {id:'HEI-CUS-10045',name:'Aarav Poudel',boid:'1301XXXXXXXX2345'};
-window.heiCollectorView = 'dashboard';
+window.heiPartnerView = 'dashboard';
 
 function progress6(n){
   return `<div class="progress" style="grid-template-columns:repeat(6,1fr)">${[1,2,3,4,5,6].map(x=>`<i class="${x<=n?'on':''}"></i>`).join('')}</div>`;
@@ -1382,7 +1368,7 @@ function sendKycForReview(){
 }
 function renderOnboarding(){
   let b='';
-  const sourceLabel=window.heiOnboardingSource==='collector'?'Collector-assisted onboarding':'Digital onboarding';
+  const sourceLabel=window.heiOnboardingSource==='partner'?'Partner-assisted onboarding':'Digital onboarding';
 
   if(onboardStep===1){
     b=`${progress6(1)}
@@ -1482,7 +1468,7 @@ function renderOnboarding(){
         <div class="review-row"><span>Investment</span><b>${investMode==='sip'?'Monthly SIP':'Lump Sum'}</b></div>
         <div class="review-row"><span>Amount</span><b>${money(investAmount)}</b></div>
       </div>
-      <div class="modal-actions"><button class="save-exit" onclick="saveAndExit()">Save & exit</button><button class="btn btn-primary" onclick="openConnectIpsPayment('Aarav Poudel',investAmount,'${investMode==='sip'?'New SIP Investment':'New Lump Sum Investment'}','${window.heiOnboardingSource==='collector'?'collectorOnboarding':'onboarding'}')">Generate connectIPS QR</button></div>`;
+      <div class="modal-actions"><button class="save-exit" onclick="saveAndExit()">Save & exit</button><button class="btn btn-primary" onclick="openConnectIpsPayment('Aarav Poudel',investAmount,'${investMode==='sip'?'New SIP Investment':'New Lump Sum Investment'}','${window.heiOnboardingSource==='partner'?'partnerOnboarding':'onboarding'}')">Generate connectIPS QR</button></div>`;
   }
 
   openModal('Open HEI Investment Account',sourceLabel,b);
@@ -1494,14 +1480,14 @@ function docTile(id,label,capture){
 function finishPayment(source){
   if(source==='onboarding'){
     clearDraft(); onboardStep=6; closeModal(); showNewAccountSuccess('customer');
-  }else if(source==='collectorOnboarding'){
-    clearDraft(); closeModal(); showNewAccountSuccess('collector');
-  }else if(source==='collector'){
+  }else if(source==='partnerOnboarding'){
+    clearDraft(); closeModal(); showNewAccountSuccess('partner');
+  }else if(source==='partner'){
     closeModal(); toast('SIP collection posted and receipt saved');
-    renderCollectorView('dashboard');
-  }else if(source==='collectorLump'){
+    renderPartnerView('dashboard');
+  }else if(source==='partnerLump'){
     closeModal(); toast('Lump-sum collection posted and receipt saved');
-    renderCollectorView('collections');
+    renderPartnerView('collections');
   }else{
     closeModal(); toast('Investment posted to customer portfolio');
   }
@@ -1510,7 +1496,7 @@ function showNewAccountSuccess(destination){
   openModal('Account Opened','Investment and onboarding completed',`
     <div class="success-state"><div class="success-icon">✓</div><h3>HEI account is active.</h3><div class="form-sub">KYC, investment and payment are complete in this mock journey.</div>
     <div class="review-box"><div class="review-row"><span>Customer ID</span><b>HEI-CUS-10882</b></div><div class="review-row"><span>Investment</span><b>${investMode==='sip'?'Monthly SIP':'Lump Sum'} • ${money(investAmount)}</b></div><div class="review-row"><span>Status</span><b>Active</b></div></div>
-    <button class="btn btn-primary" style="margin-top:13px" onclick="closeModal();${destination==='collector'?"openApp('collectorApp');renderCollectorView('customers')":"openApp('investorApp')"}">${destination==='collector'?'Back to Collector Portal':'Open Portfolio'}</button></div>
+    <button class="btn btn-primary" style="margin-top:13px" onclick="closeModal();${destination==='partner'?"openApp('partnerApp');renderPartnerView('customers')":"openApp('investorApp')"}">${destination==='partner'?'Back to Partner Portal':'Open Portfolio'}</button></div>
   `);
 }
 
@@ -1523,7 +1509,7 @@ function showPaymentSuccess(name,amount,purpose,source){
     receipt:'HEI-RCP-'+String(Math.floor(82430+Math.random()*80)),
     internalRef:'HEI-TXN-2083-'+String(Math.floor(4100+Math.random()*500)),
     gatewayRef:'CIPS-'+String(Math.floor(982174000+Math.random()*900)),
-    collector:(source==='collector'||source==='collectorLump'||source==='collectorOnboarding')?'Ram Bahadur Thapa • COL-001':'Self-service',
+    partner:(source==='partner'||source==='partnerLump'||source==='partnerOnboarding')?'Ram Bahadur Thapa • COL-001':'Self-service',
     type:purpose
   };
   openModal('Payment Successful','Detailed HEI digital receipt',buildDetailedReceipt(details,source));
@@ -1553,123 +1539,123 @@ function buildDetailedReceipt(d,source){
       <div class="dr-row"><span>Payment Method</span><b>connectIPS QR</b></div>
       <div class="dr-row"><span>HEI Transaction Ref.</span><b>${d.internalRef}</b></div>
       <div class="dr-row"><span>Gateway Reference</span><b>${d.gatewayRef}</b></div>
-      <div class="dr-row"><span>Collection Channel</span><b>${d.collector}</b></div>
+      <div class="dr-row"><span>Collection Channel</span><b>${d.partner}</b></div>
       <div class="dr-row"><span>Payment Status</span><b style="color:#138a62">Confirmed</b></div>
     </div>
     <div class="dr-foot"><small>${note} This computer-generated receipt is for demonstration and does not represent a live financial transaction.</small><span class="badge blue">DIGITAL</span></div>
   </div>
-  <div class="receipt-actions"><button class="btn btn-outline" onclick="window.print()">Print</button><button class="btn btn-outline" onclick="downloadDummyPdf('HEI_Receipt.pdf')">Download PDF</button><button class="btn btn-outline" onclick="toast('Receipt link sent by SMS')">Send SMS</button><button class="btn btn-primary" onclick="finishPayment('${source}')">${source.startsWith('collector')?'Done':'Continue'}</button></div>`;
+  <div class="receipt-actions"><button class="btn btn-outline" onclick="window.print()">Print</button><button class="btn btn-outline" onclick="downloadDummyPdf('HEI_Receipt.pdf')">Download PDF</button><button class="btn btn-outline" onclick="toast('Receipt link sent by SMS')">Send SMS</button><button class="btn btn-primary" onclick="finishPayment('${source}')">${source.startsWith('partner')?'Done':'Continue'}</button></div>`;
 }
 
-/* Collector portal */
-const collectorCustomers=[
+/* Partner portal */
+const partnerCustomers=[
   {id:'HEI-CUS-10045',name:'Aarav Poudel',phone:'9800XXXX00',boid:'1301XXXXXXXX2345',fund:'Equity Growth',sip:5000,due:5000,status:'Overdue'},
   {id:'HEI-CUS-10053',name:'Samiksha Rai',phone:'9841XXXX19',boid:'1301XXXXXXXX9821',fund:'Balanced Fund',sip:2500,due:2500,status:'Due Today'},
   {id:'HEI-CUS-10018',name:'Prabin Shrestha',phone:'9851XXXX88',boid:'1301XXXXXXXX7731',fund:'Equity Growth',sip:10000,due:0,status:'Current'},
   {id:'HEI-CUS-10071',name:'Mina Gurung',phone:'9818XXXX21',boid:'1301XXXXXXXX1028',fund:'Income Fund',sip:2000,due:0,status:'Current'},
   {id:'HEI-CUS-10084',name:'Suman KC',phone:'9860XXXX44',boid:'1301XXXXXXXX6642',fund:'Equity Growth',sip:5000,due:5000,status:'Due'}
 ];
-function collectorSetActive(view){
-  document.querySelectorAll('.collector-nav').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+function partnerSetActive(view){
+  document.querySelectorAll('.partner-nav').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
 }
-function renderCollectorView(view,el=null){
-  window.heiCollectorView=view; collectorSetActive(view);
-  const m=document.getElementById('collectorMain'); if(!m)return;
+function renderPartnerView(view,el=null){
+  window.heiPartnerView=view; partnerSetActive(view);
+  const m=document.getElementById('partnerMain'); if(!m)return;
 
-  if(view==='dashboard') m.innerHTML=collectorDashboardHtml();
-  if(view==='customers') m.innerHTML=collectorCustomersHtml();
-  if(view==='collections') m.innerHTML=collectorCollectionsHtml();
-  if(view==='newclient') m.innerHTML=collectorNewClientHtml();
-  if(view==='lumpsum') m.innerHTML=collectorLumpHtml();
-  if(view==='report') m.innerHTML=collectorReportHtml();
-  if(view==='receipts') m.innerHTML=collectorReceiptsHtml();
-  if(view==='profile') m.innerHTML=collectorProfileHtml();
-  if(view==='support') m.innerHTML=collectorSupportHtml();
+  if(view==='dashboard') m.innerHTML=partnerDashboardHtml();
+  if(view==='customers') m.innerHTML=partnerCustomersHtml();
+  if(view==='collections') m.innerHTML=partnerCollectionsHtml();
+  if(view==='newclient') m.innerHTML=partnerNewClientHtml();
+  if(view==='lumpsum') m.innerHTML=partnerLumpHtml();
+  if(view==='report') m.innerHTML=partnerReportHtml();
+  if(view==='receipts') m.innerHTML=partnerReceiptsHtml();
+  if(view==='profile') m.innerHTML=partnerProfileHtml();
+  if(view==='support') m.innerHTML=partnerSupportHtml();
 }
-function collectorDashboardHtml(){
- return `<div class="collector-wrap">
-  <div class="collector-view-title"><div><div class="kicker">Collector dashboard</div><h1>Good evening, Ram.</h1><p>Today’s collections and priority customers.</p></div><div class="collector-toolbar"><button class="btn btn-outline" onclick="renderCollectorView('lumpsum')">Collect Lump Sum</button><button class="btn btn-primary" onclick="renderCollectorView('newclient')">+ New Client</button></div></div>
+function partnerDashboardHtml(){
+ return `<div class="partner-wrap">
+  <div class="partner-view-title"><div><div class="kicker">Partner dashboard</div><h1>Good evening, Ram.</h1><p>Today’s collections and priority customers.</p></div><div class="partner-toolbar"><button class="btn btn-outline" onclick="renderPartnerView('lumpsum')">Collect Lump Sum</button><button class="btn btn-primary" onclick="renderPartnerView('newclient')">+ New Client</button></div></div>
   <div class="kpi-grid"><div class="kpi"><span>Collected today</span><b>Rs. 85,000</b><small>12 transactions</small></div><div class="kpi"><span>Customers visited</span><b>12</b><small>8 more planned</small></div><div class="kpi"><span>SIP due</span><b>18</b><small>Rs. 92,500</small></div><div class="kpi"><span>Lump sum today</span><b>Rs. 27,000</b><small>4 ad-hoc collections</small></div></div>
-  <div class="collector-grid">
+  <div class="partner-grid">
     <div>
-      <div class="panel"><div class="panel-title"><h3>Customer lookup</h3><span class="micro">ID • Phone • BOID</span></div><div class="search-row"><input id="collectorSearch2" placeholder="Search customer" value="HEI-CUS-10045"><button class="btn btn-primary" onclick="collectorSearchOpen()">Search</button></div></div>
-      <div class="panel"><div class="panel-title"><h3>Priority collections</h3><button class="btn btn-text" onclick="renderCollectorView('customers')">My customers</button></div>
-        ${collectorCustomers.filter(x=>x.due>0).slice(0,3).map(c=>`<div class="customer-item"><div><h4>${c.name}</h4><p>${c.id} • ${c.fund} • ${c.status}</p></div><div class="customer-due"><b>${money(c.due)}</b><button class="btn btn-primary" style="margin-top:6px;padding:7px 10px;font-size:9px" onclick="collectorPayment('${c.name}',${c.due})">Collect SIP</button></div></div>`).join('')}
+      <div class="panel"><div class="panel-title"><h3>Customer lookup</h3><span class="micro">ID • Phone • BOID</span></div><div class="search-row"><input id="partnerSearch2" placeholder="Search customer" value="HEI-CUS-10045"><button class="btn btn-primary" onclick="partnerSearchOpen()">Search</button></div></div>
+      <div class="panel"><div class="panel-title"><h3>Priority collections</h3><button class="btn btn-text" onclick="renderPartnerView('customers')">My customers</button></div>
+        ${partnerCustomers.filter(x=>x.due>0).slice(0,3).map(c=>`<div class="customer-item"><div><h4>${c.name}</h4><p>${c.id} • ${c.fund} • ${c.status}</p></div><div class="customer-due"><b>${money(c.due)}</b><button class="btn btn-primary" style="margin-top:6px;padding:7px 10px;font-size:9px" onclick="partnerPayment('${c.name}',${c.due})">Collect SIP</button></div></div>`).join('')}
       </div>
     </div>
     <div>
       <div class="panel"><div class="panel-title"><h3>Quick actions</h3><span class="badge blue">TODAY</span></div>
         <div class="action-grid">
-          <button class="action-card" onclick="renderCollectorView('customers')"><div class="aicon">C</div><h4>My Customers</h4><p>Search, filter and open client profiles.</p></button>
-          <button class="action-card" onclick="renderCollectorView('lumpsum')"><div class="aicon">₹</div><h4>Collect Lump Sum</h4><p>Any amount for an existing client.</p></button>
-          <button class="action-card" onclick="renderCollectorView('newclient')"><div class="aicon">+</div><h4>New Client</h4><p>OTP, KYC, documents and first investment.</p></button>
+          <button class="action-card" onclick="renderPartnerView('customers')"><div class="aicon">C</div><h4>My Customers</h4><p>Search, filter and open client profiles.</p></button>
+          <button class="action-card" onclick="renderPartnerView('lumpsum')"><div class="aicon">₹</div><h4>Collect Lump Sum</h4><p>Any amount for an existing client.</p></button>
+          <button class="action-card" onclick="renderPartnerView('newclient')"><div class="aicon">+</div><h4>New Client</h4><p>OTP, KYC, documents and first investment.</p></button>
         </div>
       </div>
       <div class="panel"><div class="panel-title"><h3>Target progress</h3><span class="badge blue">68%</span></div><div style="height:10px;border-radius:999px;background:#edf2f4;overflow:hidden"><div style="width:68%;height:100%;background:#166283"></div></div><div class="review-box"><div class="review-row"><span>Daily target</span><b>Rs. 125,000</b></div><div class="review-row"><span>Collected</span><b>Rs. 85,000</b></div></div></div>
     </div>
   </div></div>`;
 }
-function collectorCustomersHtml(){
- return `<div class="collector-wrap"><div class="collector-view-title"><div><div class="kicker">Client book</div><h1>My Customers</h1><p>Assigned investors in Baneshwor Zone.</p></div><button class="btn btn-primary" onclick="renderCollectorView('newclient')">+ New Client</button></div>
- <div class="panel"><div class="panel-title"><div class="search-row" style="width:min(520px,100%)"><input placeholder="Search name, ID, phone or BOID" oninput="filterCollectorCustomers(this.value)"><button class="btn btn-outline">Search</button></div><div class="filter-row"><button class="filter-chip active">All</button><button class="filter-chip">Due</button><button class="filter-chip">Overdue</button><button class="filter-chip">Current</button></div></div><div class="collector-list" id="collectorCustomerList">${collectorCustomerRows(collectorCustomers)}</div></div></div>`;
+function partnerCustomersHtml(){
+ return `<div class="partner-wrap"><div class="partner-view-title"><div><div class="kicker">Client book</div><h1>My Customers</h1><p>Assigned investors in Baneshwor Zone.</p></div><button class="btn btn-primary" onclick="renderPartnerView('newclient')">+ New Client</button></div>
+ <div class="panel"><div class="panel-title"><div class="search-row" style="width:min(520px,100%)"><input placeholder="Search name, ID, phone or BOID" oninput="filterPartnerCustomers(this.value)"><button class="btn btn-outline">Search</button></div><div class="filter-row"><button class="filter-chip active">All</button><button class="filter-chip">Due</button><button class="filter-chip">Overdue</button><button class="filter-chip">Current</button></div></div><div class="partner-list" id="partnerCustomerList">${partnerCustomerRows(partnerCustomers)}</div></div></div>`;
 }
-function collectorCustomerRows(list){
- return list.map(c=>`<div class="collector-person"><div><h4>${c.name}</h4><p>${c.id} • ${c.phone} • ${c.boid}</p></div><div class="portfolio-meta"><span>Primary fund</span><b>${c.fund}</b></div><div style="text-align:right"><span class="badge ${c.due?'amber':'green'}">${c.status}</span><div style="margin-top:7px;display:flex;gap:5px"><button class="btn btn-outline" style="padding:6px 8px;font-size:8px" onclick="openCollectorCustomer('${c.id}')">Open</button>${c.due?`<button class="btn btn-primary" style="padding:6px 8px;font-size:8px" onclick="collectorPayment('${c.name}',${c.due})">Collect</button>`:''}</div></div></div>`).join('');
+function partnerCustomerRows(list){
+ return list.map(c=>`<div class="partner-person"><div><h4>${c.name}</h4><p>${c.id} • ${c.phone} • ${c.boid}</p></div><div class="portfolio-meta"><span>Primary fund</span><b>${c.fund}</b></div><div style="text-align:right"><span class="badge ${c.due?'amber':'green'}">${c.status}</span><div style="margin-top:7px;display:flex;gap:5px"><button class="btn btn-outline" style="padding:6px 8px;font-size:8px" onclick="openPartnerCustomer('${c.id}')">Open</button>${c.due?`<button class="btn btn-primary" style="padding:6px 8px;font-size:8px" onclick="partnerPayment('${c.name}',${c.due})">Collect</button>`:''}</div></div></div>`).join('');
 }
-function filterCollectorCustomers(q){
- q=(q||'').toLowerCase(); const list=collectorCustomers.filter(c=>Object.values(c).join(' ').toLowerCase().includes(q)); const el=document.getElementById('collectorCustomerList');if(el)el.innerHTML=collectorCustomerRows(list);
+function filterPartnerCustomers(q){
+ q=(q||'').toLowerCase(); const list=partnerCustomers.filter(c=>Object.values(c).join(' ').toLowerCase().includes(q)); const el=document.getElementById('partnerCustomerList');if(el)el.innerHTML=partnerCustomerRows(list);
 }
-function openCollectorCustomer(id){
- const c=collectorCustomers.find(x=>x.id===id)||collectorCustomers[0]; window.heiSelectedClient=c;
+function openPartnerCustomer(id){
+ const c=partnerCustomers.find(x=>x.id===id)||partnerCustomers[0]; window.heiSelectedClient=c;
  openModal('Customer Profile',`${c.id} • Existing HEI investor`,`
  <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div><div class="form-title" style="margin-top:0">${c.name}</div><div class="form-sub">${c.phone} • ${c.boid}</div></div><span class="badge green">KYC VERIFIED</span></div>
  <div class="review-box"><div class="review-row"><span>Primary Fund</span><b>${c.fund}</b></div><div class="review-row"><span>Monthly SIP</span><b>${money(c.sip)}</b></div><div class="review-row"><span>SIP Outstanding</span><b>${money(c.due)}</b></div><div class="review-row"><span>Portfolio Value</span><b>Rs. 139,500</b></div></div>
- <div class="modal-actions"><button class="btn btn-outline" onclick="openCollectorQuickCollect('${c.id}')">Collect Lump Sum</button>${c.due?`<button class="btn btn-primary" onclick="collectorPayment('${c.name}',${c.due})">Collect Due SIP</button>`:'<button class="btn btn-primary" onclick="toast(\'No SIP currently due\')">SIP Current</button>'}</div>`);
+ <div class="modal-actions"><button class="btn btn-outline" onclick="openPartnerQuickCollect('${c.id}')">Collect Lump Sum</button>${c.due?`<button class="btn btn-primary" onclick="partnerPayment('${c.name}',${c.due})">Collect Due SIP</button>`:'<button class="btn btn-primary" onclick="toast(\'No SIP currently due\')">SIP Current</button>'}</div>`);
 }
-function collectorSearchOpen(){openCollectorCustomer('HEI-CUS-10045')}
+function partnerSearchOpen(){openPartnerCustomer('HEI-CUS-10045')}
 
-function collectorCollectionsHtml(){
- return `<div class="collector-wrap"><div class="collector-view-title"><div><div class="kicker">Transactions</div><h1>Collections</h1><p>SIP and ad-hoc lump-sum collections.</p></div><button class="btn btn-primary" onclick="renderCollectorView('lumpsum')">+ Collect Lump Sum</button></div>
+function partnerCollectionsHtml(){
+ return `<div class="partner-wrap"><div class="partner-view-title"><div><div class="kicker">Transactions</div><h1>Collections</h1><p>SIP and ad-hoc lump-sum collections.</p></div><button class="btn btn-primary" onclick="renderPartnerView('lumpsum')">+ Collect Lump Sum</button></div>
  <div class="panel"><table class="table"><thead><tr><th>Time</th><th>Client</th><th>Type</th><th>Amount</th><th>Method</th><th>Status</th><th></th></tr></thead><tbody>
  <tr><td>19:04</td><td>Aarav Poudel</td><td>SIP</td><td>Rs. 5,000</td><td>connectIPS QR</td><td><span class="badge green">Paid</span></td><td><button class="btn btn-text" onclick="showSampleReceipt('Aarav Poudel',5000,'SIP Collection')">Receipt</button></td></tr>
  <tr><td>18:42</td><td>Mina Gurung</td><td>Lump Sum</td><td>Rs. 2,000</td><td>connectIPS QR</td><td><span class="badge green">Paid</span></td><td><button class="btn btn-text" onclick="showSampleReceipt('Mina Gurung',2000,'Lump Sum Collection')">Receipt</button></td></tr>
  <tr><td>17:18</td><td>Suman KC</td><td>Lump Sum</td><td>Rs. 5,000</td><td>connectIPS QR</td><td><span class="badge green">Paid</span></td><td><button class="btn btn-text" onclick="showSampleReceipt('Suman KC',5000,'Lump Sum Collection')">Receipt</button></td></tr>
  </tbody></table></div></div>`;
 }
-function collectorNewClientHtml(){
- return `<div class="collector-wrap"><div class="collector-view-title"><div><div class="kicker">Onboarding</div><h1>New Client</h1><p>Start a new investor application from the field.</p></div></div>
- <div class="panel" style="max-width:760px"><div class="action-grid"><button class="action-card" onclick="window.heiOnboardingSource='collector';startOnboarding('sip')"><div class="aicon">S</div><h4>New SIP Client</h4><p>OTP, KYC, documents, SIP and first payment.</p></button><button class="action-card" onclick="window.heiOnboardingSource='collector';startOnboarding('lump')"><div class="aicon">L</div><h4>New Lump-Sum Client</h4><p>Open account and make first one-time investment.</p></button><button class="action-card" onclick="toast('Pending KYC applications opened')"><div class="aicon">K</div><h4>Pending Verification</h4><p>Applications sent to HEI Operations.</p></button></div>
- <div class="info-banner"><div class="doticon">i</div><div><b>Same investor onboarding, collector-assisted</b><p>If Nagarik data or image checks fail, documents are sent to HEI verification. The client can resume using the login created after OTP.</p></div></div></div></div>`;
+function partnerNewClientHtml(){
+ return `<div class="partner-wrap"><div class="partner-view-title"><div><div class="kicker">Onboarding</div><h1>New Client</h1><p>Start a new investor application from the field.</p></div></div>
+ <div class="panel" style="max-width:760px"><div class="action-grid"><button class="action-card" onclick="window.heiOnboardingSource='partner';startOnboarding('sip')"><div class="aicon">S</div><h4>New SIP Client</h4><p>OTP, KYC, documents, SIP and first payment.</p></button><button class="action-card" onclick="window.heiOnboardingSource='partner';startOnboarding('lump')"><div class="aicon">L</div><h4>New Lump-Sum Client</h4><p>Open account and make first one-time investment.</p></button><button class="action-card" onclick="toast('Pending KYC applications opened')"><div class="aicon">K</div><h4>Pending Verification</h4><p>Applications sent to HEI Operations.</p></button></div>
+ <div class="info-banner"><div class="doticon">i</div><div><b>Same investor onboarding, partner-assisted</b><p>If Nagarik data or image checks fail, documents are sent to HEI verification. The client can resume using the login created after OTP.</p></div></div></div></div>`;
 }
-function collectorLumpHtml(){
- const c=window.heiSelectedClient||collectorCustomers[0];
- return `<div class="collector-wrap"><div class="collector-view-title"><div><div class="kicker">Ad-hoc investment</div><h1>Collect Lump Sum</h1><p>Collect any amount for an existing verified client. This is separate from SIP due.</p></div></div>
+function partnerLumpHtml(){
+ const c=window.heiSelectedClient||partnerCustomers[0];
+ return `<div class="partner-wrap"><div class="partner-view-title"><div><div class="kicker">Ad-hoc investment</div><h1>Collect Lump Sum</h1><p>Collect any amount for an existing verified client. This is separate from SIP due.</p></div></div>
  <div class="lumpsum-form">
-   <div class="panel"><div class="panel-title"><h3>Select client</h3><span class="micro">Existing verified investors</span></div><div class="search-row" style="margin-bottom:10px"><input placeholder="Search customer"><button class="btn btn-outline">Search</button></div><div class="client-select-list">${collectorCustomers.map((x,i)=>`<div class="client-select ${x.id===c.id?'active':''}" onclick="selectLumpClient('${x.id}')"><div><h4>${x.name}</h4><span>${x.id} • ${x.boid}</span></div><span>${x.fund}</span></div>`).join('')}</div></div>
+   <div class="panel"><div class="panel-title"><h3>Select client</h3><span class="micro">Existing verified investors</span></div><div class="search-row" style="margin-bottom:10px"><input placeholder="Search customer"><button class="btn btn-outline">Search</button></div><div class="client-select-list">${partnerCustomers.map((x,i)=>`<div class="client-select ${x.id===c.id?'active':''}" onclick="selectLumpClient('${x.id}')"><div><h4>${x.name}</h4><span>${x.id} • ${x.boid}</span></div><span>${x.fund}</span></div>`).join('')}</div></div>
    <div class="panel"><div class="panel-title"><h3>Collection instruction</h3><span class="badge blue">LUMP SUM</span></div><div class="review-box"><div class="review-row"><span>Client</span><b id="lumpClientName">${c.name}</b></div><div class="review-row"><span>Customer ID</span><b id="lumpClientId">${c.id}</b></div></div>
    <div class="field full" style="margin-top:12px"><label>FUND</label><select id="lumpFund"><option>HEI Equity Growth Fund</option><option>HEI Balanced Fund</option><option>HEI Income Fund</option></select></div>
    <div class="field full" style="margin-top:11px"><label>AMOUNT</label><input class="amount-entry" id="lumpAmount" type="number" value="2000" min="1000"></div>
    <div class="quick-amounts">${[1000,2000,5000,10000,25000].map(a=>`<button class="amount-chip" onclick="document.getElementById('lumpAmount').value=${a}">${money(a)}</button>`).join('')}</div>
-   <button class="btn btn-primary btn-block" onclick="startCollectorLumpPayment()">Generate connectIPS QR</button></div>
+   <button class="btn btn-primary btn-block" onclick="startPartnerLumpPayment()">Generate connectIPS QR</button></div>
  </div></div>`;
 }
-function selectLumpClient(id){window.heiSelectedClient=collectorCustomers.find(x=>x.id===id)||collectorCustomers[0];renderCollectorView('lumpsum')}
-function openCollectorQuickCollect(id=null){if(id)window.heiSelectedClient=collectorCustomers.find(x=>x.id===id)||collectorCustomers[0];openApp('collectorApp');renderCollectorView('lumpsum')}
-function startCollectorLumpPayment(){
- const c=window.heiSelectedClient||collectorCustomers[0]; const amt=+(document.getElementById('lumpAmount')?.value||0);
+function selectLumpClient(id){window.heiSelectedClient=partnerCustomers.find(x=>x.id===id)||partnerCustomers[0];renderPartnerView('lumpsum')}
+function openPartnerQuickCollect(id=null){if(id)window.heiSelectedClient=partnerCustomers.find(x=>x.id===id)||partnerCustomers[0];openApp('partnerApp');renderPartnerView('lumpsum')}
+function startPartnerLumpPayment(){
+ const c=window.heiSelectedClient||partnerCustomers[0]; const amt=+(document.getElementById('lumpAmount')?.value||0);
  if(amt<1000){toast('Enter at least Rs. 1,000');return}
- openConnectIpsPayment(c.name,amt,'Lump Sum Collection','collectorLump');
+ openConnectIpsPayment(c.name,amt,'Lump Sum Collection','partnerLump');
 }
-function collectorReportHtml(){
- return `<div class="collector-wrap"><div class="collector-view-title"><div><div class="kicker">Performance</div><h1>My Report</h1><p>August 2026 • collector performance snapshot.</p></div></div><div class="kpi-grid"><div class="kpi"><span>Total collection</span><b>Rs. 1.82m</b><small>Month to date</small></div><div class="kpi"><span>SIP</span><b>Rs. 1.21m</b><small>66% of collection</small></div><div class="kpi"><span>Lump sum</span><b>Rs. 0.61m</b><small>34% of collection</small></div><div class="kpi"><span>New clients</span><b>24</b><small>18 KYC verified</small></div></div><div class="panel" style="margin-top:12px"><div class="panel-title"><h3>Monthly target</h3><span class="badge green">91%</span></div><div style="height:12px;border-radius:999px;background:#edf2f4;overflow:hidden"><div style="height:100%;width:91%;background:#166283"></div></div><div class="review-box"><div class="review-row"><span>Target</span><b>Rs. 2.00m</b></div><div class="review-row"><span>Collected</span><b>Rs. 1.82m</b></div><div class="review-row"><span>Remaining</span><b>Rs. 0.18m</b></div></div></div></div>`;
+function partnerReportHtml(){
+ return `<div class="partner-wrap"><div class="partner-view-title"><div><div class="kicker">Performance</div><h1>My Report</h1><p>August 2026 • partner performance snapshot.</p></div></div><div class="kpi-grid"><div class="kpi"><span>Total collection</span><b>Rs. 1.82m</b><small>Month to date</small></div><div class="kpi"><span>SIP</span><b>Rs. 1.21m</b><small>66% of collection</small></div><div class="kpi"><span>Lump sum</span><b>Rs. 0.61m</b><small>34% of collection</small></div><div class="kpi"><span>New clients</span><b>24</b><small>18 KYC verified</small></div></div><div class="panel" style="margin-top:12px"><div class="panel-title"><h3>Monthly target</h3><span class="badge green">91%</span></div><div style="height:12px;border-radius:999px;background:#edf2f4;overflow:hidden"><div style="height:100%;width:91%;background:#166283"></div></div><div class="review-box"><div class="review-row"><span>Target</span><b>Rs. 2.00m</b></div><div class="review-row"><span>Collected</span><b>Rs. 1.82m</b></div><div class="review-row"><span>Remaining</span><b>Rs. 0.18m</b></div></div></div></div>`;
 }
-function collectorReceiptsHtml(){
- return `<div class="collector-wrap"><div class="collector-view-title"><div><div class="kicker">Receipts</div><h1>Digital Receipts</h1><p>Search and re-open customer receipts.</p></div></div><div class="panel"><table class="table"><thead><tr><th>Receipt</th><th>Customer</th><th>Type</th><th>Amount</th><th>Date</th><th></th></tr></thead><tbody><tr><td>HEI-RCP-82432</td><td>Aarav Poudel</td><td>SIP</td><td>Rs. 5,000</td><td>07 Aug 2026</td><td><button class="btn btn-text" onclick="showSampleReceipt('Aarav Poudel',5000,'SIP Collection')">Open</button></td></tr><tr><td>HEI-RCP-82430</td><td>Mina Gurung</td><td>Lump Sum</td><td>Rs. 2,000</td><td>07 Aug 2026</td><td><button class="btn btn-text" onclick="showSampleReceipt('Mina Gurung',2000,'Lump Sum Collection')">Open</button></td></tr></tbody></table></div></div>`;
+function partnerReceiptsHtml(){
+ return `<div class="partner-wrap"><div class="partner-view-title"><div><div class="kicker">Receipts</div><h1>Digital Receipts</h1><p>Search and re-open customer receipts.</p></div></div><div class="panel"><table class="table"><thead><tr><th>Receipt</th><th>Customer</th><th>Type</th><th>Amount</th><th>Date</th><th></th></tr></thead><tbody><tr><td>HEI-RCP-82432</td><td>Aarav Poudel</td><td>SIP</td><td>Rs. 5,000</td><td>07 Aug 2026</td><td><button class="btn btn-text" onclick="showSampleReceipt('Aarav Poudel',5000,'SIP Collection')">Open</button></td></tr><tr><td>HEI-RCP-82430</td><td>Mina Gurung</td><td>Lump Sum</td><td>Rs. 2,000</td><td>07 Aug 2026</td><td><button class="btn btn-text" onclick="showSampleReceipt('Mina Gurung',2000,'Lump Sum Collection')">Open</button></td></tr></tbody></table></div></div>`;
 }
-function collectorProfileHtml(){return `<div class="collector-wrap"><div class="collector-view-title"><div><div class="kicker">Account</div><h1>Collector Profile</h1><p>Authorized HEI distribution user.</p></div></div><div class="panel" style="max-width:700px"><div class="review-box"><div class="review-row"><span>Name</span><b>Ram Bahadur Thapa</b></div><div class="review-row"><span>Collector ID</span><b>COL-001</b></div><div class="review-row"><span>Zone</span><b>Baneshwor</b></div><div class="review-row"><span>Assigned Customers</span><b>248</b></div><div class="review-row"><span>Status</span><b style="color:#138a62">Active</b></div></div><button class="btn btn-outline" style="margin-top:12px" onclick="toast('Password change simulated')">Change Password</button></div></div>`}
-function collectorSupportHtml(){return `<div class="collector-wrap"><div class="collector-view-title"><div><div class="kicker">Help</div><h1>Support</h1><p>Quick support for collection and onboarding issues.</p></div></div><div class="action-grid"><button class="action-card" onclick="toast('Support ticket opened')"><div class="aicon">?</div><h4>Payment issue</h4><p>QR, pending payment or receipt issue.</p></button><button class="action-card" onclick="toast('KYC support opened')"><div class="aicon">K</div><h4>KYC issue</h4><p>Document or verification support.</p></button><button class="action-card" onclick="toast('Operations contact opened')"><div class="aicon">O</div><h4>Call Operations</h4><p>Escalate an urgent field issue.</p></button></div></div>`}
-function showSampleReceipt(name,amount,purpose){showPaymentSuccess(name,amount,purpose,'collector')}
-function collectorPayment(name,amount){openConnectIpsPayment(name,amount,'SIP Collection','collector')}
+function partnerProfileHtml(){return `<div class="partner-wrap"><div class="partner-view-title"><div><div class="kicker">Account</div><h1>Partner Profile</h1><p>Authorized HEI distribution user.</p></div></div><div class="panel" style="max-width:700px"><div class="review-box"><div class="review-row"><span>Name</span><b>Ram Bahadur Thapa</b></div><div class="review-row"><span>Partner ID</span><b>COL-001</b></div><div class="review-row"><span>Zone</span><b>Baneshwor</b></div><div class="review-row"><span>Assigned Customers</span><b>248</b></div><div class="review-row"><span>Status</span><b style="color:#138a62">Active</b></div></div><button class="btn btn-outline" style="margin-top:12px" onclick="toast('Password change simulated')">Change Password</button></div></div>`}
+function partnerSupportHtml(){return `<div class="partner-wrap"><div class="partner-view-title"><div><div class="kicker">Help</div><h1>Support</h1><p>Quick support for collection and onboarding issues.</p></div></div><div class="action-grid"><button class="action-card" onclick="toast('Support ticket opened')"><div class="aicon">?</div><h4>Payment issue</h4><p>QR, pending payment or receipt issue.</p></button><button class="action-card" onclick="toast('KYC support opened')"><div class="aicon">K</div><h4>KYC issue</h4><p>Document or verification support.</p></button><button class="action-card" onclick="toast('Operations contact opened')"><div class="aicon">O</div><h4>Call Operations</h4><p>Escalate an urgent field issue.</p></button></div></div>`}
+function showSampleReceipt(name,amount,purpose){showPaymentSuccess(name,amount,purpose,'partner')}
+function partnerPayment(name,amount){openConnectIpsPayment(name,amount,'SIP Collection','partner')}
 
 /* Better RemitInvest */
 function openRemittance(){remitStep=1;remitPartner='IME Remit';openApp('remitApp');renderRemit()}
@@ -1732,7 +1718,7 @@ function completeRemittance(){
 
 /* Make portal side links feel clickable in the prototype */
 document.addEventListener('DOMContentLoaded',()=>{
-  renderCollectorView('dashboard');
+  renderPartnerView('dashboard');
   document.querySelectorAll('#investorApp .side-link').forEach((x,i)=>{
     if(!x.getAttribute('onclick')) x.onclick=()=>toast(['Overview opened','Investment holdings opened','SIP plans opened','Transactions opened','Invest more','Remittance SIP','Statements opened','Profile & KYC opened'][i]||'Section opened');
   });
@@ -1756,7 +1742,7 @@ function defaultInvestorState(){
   sips:[{id:'SIP-2082-0041',fund:'HEI Equity Growth Fund',code:'HEI-EGF',amount:5000,frequency:'Monthly',start:'15 Sep 2025',nextDue:'07 Aug 2026',dueAmount:5000,dueMonths:1,status:'Due',paidMonths:11}],
   transactions:[
     {id:'HEI-TXN-4098',date:'02 Aug 2026',type:'Remittance SIP',channel:'IME Remit*',fund:'HEI Equity Growth Fund',amount:7500,status:'Completed'},
-    {id:'HEI-TXN-4021',date:'15 Jul 2026',type:'SIP',channel:'Collector QR',fund:'HEI Equity Growth Fund',amount:5000,status:'Completed'},
+    {id:'HEI-TXN-4021',date:'15 Jul 2026',type:'SIP',channel:'Partner QR',fund:'HEI Equity Growth Fund',amount:5000,status:'Completed'},
     {id:'HEI-TXN-3974',date:'15 Jun 2026',type:'SIP',channel:'connectIPS',fund:'HEI Equity Growth Fund',amount:5000,status:'Completed'},
     {id:'HEI-TXN-3881',date:'03 Jun 2026',type:'Lump Sum',channel:'connectIPS',fund:'HEI Balanced Fund',amount:25000,status:'Completed'}
   ]
@@ -1793,7 +1779,7 @@ function reviewInvestorInvestment(mode){const amt=+(document.getElementById('inv
 function openSipPayment(){const s=getInvestorState(),sip=s.sips[0];if(!sip.dueAmount){toast('No SIP payment is currently due');return}pendingInvestorAction={kind:'sipDue',amount:sip.dueAmount,code:sip.code,fund:sip.fund};openConnectIpsPayment('Aarav Poudel',sip.dueAmount,'SIP Due Payment','investorSipDue')}
 function postInvestorInvestment(){if(!pendingInvestorAction)return;const a=pendingInvestorAction,s=getInvestorState();let h=s.holdings.find(x=>x.code===a.code);const navMap={'HEI-EGF':12.45,'HEI-BAL':11.75,'HEI-INC':10.92};const nav=navMap[a.code]||10;const units=a.amount/nav;if(!h){h={code:a.code,name:a.fund,units:0,wacc:0,nav,navDate:'07 Aug 2026',invested:0,risk:'Moderate'};s.holdings.push(h)}const oldCost=h.invested,newInvested=oldCost+a.amount,newUnits=h.units+units;h.wacc=newInvested/newUnits;h.units=newUnits;h.invested=newInvested;h.nav=nav;if(a.mode==='sip'){s.sips.push({id:'SIP-2083-'+String(100+Math.floor(Math.random()*899)),fund:a.fund,code:a.code,amount:a.amount,frequency:'Monthly',start:'15 Sep 2026',nextDue:'15 Sep 2026',dueAmount:0,dueMonths:0,status:'Active',paidMonths:1})}s.transactions.unshift({id:'HEI-TXN-'+String(4200+Math.floor(Math.random()*500)),date:'07 Aug 2026',type:a.mode==='sip'?'SIP':'Lump Sum',channel:'connectIPS',fund:a.fund,amount:a.amount,status:'Completed'});saveInvestorState(s);pendingInvestorAction=null;renderInvestorView('overview')}
 function postSipDue(){if(!pendingInvestorAction)return;const a=pendingInvestorAction,s=getInvestorState(),sip=s.sips[0];const h=s.holdings.find(x=>x.code===a.code);const units=a.amount/h.nav;const newInvested=h.invested+a.amount,newUnits=h.units+units;h.units=newUnits;h.invested=newInvested;h.wacc=newInvested/newUnits;sip.dueAmount=0;sip.dueMonths=0;sip.status='Active';sip.paidMonths+=1;sip.nextDue='15 Sep 2026';s.transactions.unshift({id:'HEI-TXN-'+String(4200+Math.floor(Math.random()*500)),date:'07 Aug 2026',type:'SIP',channel:'connectIPS',fund:a.fund,amount:a.amount,status:'Completed'});saveInvestorState(s);pendingInvestorAction=null;renderInvestorView('overview')}
-function finishPayment(source){if(source==='investorInvestment'){closeModal();postInvestorInvestment();toast('Investment posted. Portfolio recalculated.')}else if(source==='investorSipDue'){closeModal();postSipDue();toast('SIP paid. Due amount cleared and units added.')}else if(source==='onboarding'){clearDraft();onboardStep=6;closeModal();showNewAccountSuccess('customer')}else if(source==='collectorOnboarding'){clearDraft();closeModal();showNewAccountSuccess('collector')}else if(source==='collector'){closeModal();toast('SIP collection posted and receipt saved');renderCollectorView('dashboard')}else if(source==='collectorLump'){closeModal();toast('Lump-sum collection posted and receipt saved');renderCollectorView('collections')}else{closeModal();toast('Investment posted to customer portfolio')}}
+function finishPayment(source){if(source==='investorInvestment'){closeModal();postInvestorInvestment();toast('Investment posted. Portfolio recalculated.')}else if(source==='investorSipDue'){closeModal();postSipDue();toast('SIP paid. Due amount cleared and units added.')}else if(source==='onboarding'){clearDraft();onboardStep=6;closeModal();showNewAccountSuccess('customer')}else if(source==='partnerOnboarding'){clearDraft();closeModal();showNewAccountSuccess('partner')}else if(source==='partner'){closeModal();toast('SIP collection posted and receipt saved');renderPartnerView('dashboard')}else if(source==='partnerLump'){closeModal();toast('Lump-sum collection posted and receipt saved');renderPartnerView('collections')}else{closeModal();toast('Investment posted to customer portfolio')}}
 function investorStatementsHtml(){const s=getInvestorState();return `<div class="investor-main-stack"><div class="portal-title"><div><div class="kicker">Documents</div><h1>Statements</h1><p>Generate portfolio and transaction statements instantly.</p></div></div><div class="panel" style="margin-top:13px"><div class="statement-controls"><div class="field"><label>STATEMENT TYPE</label><select id="stmtType"><option>Transaction Statement</option><option>Investment Statement</option><option>SIP Statement</option><option>Capital Gain Statement</option></select></div><div class="field"><label>FROM</label><input id="stmtFrom" type="date" value="2026-06-01"></div><div class="field"><label>TO</label><input id="stmtTo" type="date" value="2026-08-07"></div><div class="field"><label>FUND</label><select id="stmtFund"><option>All Funds</option>${s.holdings.map(h=>`<option>${h.name}</option>`).join('')}</select></div></div><div class="portal-actions" style="margin-top:11px"><button class="btn btn-primary" onclick="generateStatementPreview()">Generate Statement</button><button class="btn btn-outline" onclick="downloadStatementCsv()">Download CSV</button></div></div><div id="statementPreview">${statementPreviewHtml()}</div></div>`}
 function statementPreviewHtml(){const s=getInvestorState(),t=portfolioTotals(s);return `<div class="statement-preview"><div class="statement-head"><div><h3>HEI Investment Statement</h3><div class="micro">Aarav Poudel • HEI-CUS-10045 • 01 Jun 2026 – 07 Aug 2026</div></div><span class="badge blue">PREVIEW</span></div><div class="statement-summary"><div><span>Total Invested</span><b>${money(t.invested)}</b></div><div><span>Current Value</span><b>${money(t.current)}</b></div><div><span>Gain / Loss</span><b class="${t.gain>=0?'positive':'negative'}">${money(t.gain)}</b></div></div><div style="padding:12px">${transactionTable(s.transactions,true)}</div><div class="receipt-actions" style="padding:0 12px 12px"><button class="btn btn-outline" onclick="window.print()">Print / Save PDF</button></div></div>`}
 function generateStatementPreview(){document.getElementById('statementPreview').innerHTML=statementPreviewHtml();toast('Statement generated')}
@@ -1809,7 +1795,7 @@ function editBankDetails(){const s=getInvestorState();openModal('Change Bank Acc
 function saveBankPending(){const s=getInvestorState();s.bank.bank=document.getElementById('editBank').value;s.bank.branch=document.getElementById('editBranch').value;s.bank.accountName=document.getElementById('editAccountName').value;s.bank.account='XXXXXX'+document.getElementById('editAccount').value.slice(-4);s.bank.status='Pending Validation';saveInvestorState(s);closeModal();renderInvestorView('bank');setTimeout(validateBankDetails,300)}
 function validateBankDetails(){openModal('Bank Validation','Mock account ownership validation',`<div class="verifying show"><div class="spinner"></div><b style="color:#294652">Checking account ownership...</b><div class="micro" style="margin-top:5px">Account status • name match • bank response</div></div>`);setTimeout(()=>{const s=getInvestorState();s.bank.status='Verified';s.bank.lastVerified='07 Aug 2026';saveInvestorState(s);openModal('Bank Validated','Account ownership verified',`<div class="success-state"><div class="success-icon">✓</div><h3>Bank account verified</h3><div class="form-sub">Account is active for future settlement instructions.</div><div class="review-box"><div class="review-row"><span>Account Name Match</span><b>100%</b></div><div class="review-row"><span>Account Status</span><b>Active</b></div><div class="review-row"><span>Validation</span><b>Successful</b></div></div><button class="btn btn-primary" style="margin-top:12px" onclick="closeModal();renderInvestorView('bank')">Done</button></div>`);},1100)}
 function investorToastPanel(){const old=document.getElementById('investorNoticePanel');if(old){old.remove();return}const d=document.createElement('div');d.id='investorNoticePanel';d.className='notice-panel';d.innerHTML=`<h3>Notifications</h3><div class="notice-item"><b>SIP payment due</b><p>Rs. 5,000 for HEI Equity Growth Fund.</p></div><div class="notice-item"><b>Latest NAV published</b><p>Equity Growth Fund NAV: Rs. 12.45.</p></div><div class="notice-item"><b>Bank validation complete</b><p>Your settlement account is verified.</p></div>`;document.body.appendChild(d)}
-function showPaymentSuccess(name,amount,purpose,source){const details={name,amount,purpose,source,customerId:'HEI-CUS-10045',boid:'1301XXXXXXXX2345',fund:pendingInvestorAction?.fund||'HEI Equity Growth Fund',receipt:'HEI-RCP-'+String(Math.floor(82430+Math.random()*80)),internalRef:'HEI-TXN-2083-'+String(Math.floor(4100+Math.random()*500)),gatewayRef:'CIPS-'+String(Math.floor(982174000+Math.random()*900)),collector:(source==='collector'||source==='collectorLump'||source==='collectorOnboarding')?'Ram Bahadur Thapa • COL-001':'Self-service',type:purpose};openModal('Payment Successful','Detailed HEI digital receipt',buildDetailedReceipt(details,source))}
+function showPaymentSuccess(name,amount,purpose,source){const details={name,amount,purpose,source,customerId:'HEI-CUS-10045',boid:'1301XXXXXXXX2345',fund:pendingInvestorAction?.fund||'HEI Equity Growth Fund',receipt:'HEI-RCP-'+String(Math.floor(82430+Math.random()*80)),internalRef:'HEI-TXN-2083-'+String(Math.floor(4100+Math.random()*500)),gatewayRef:'CIPS-'+String(Math.floor(982174000+Math.random()*900)),partner:(source==='partner'||source==='partnerLump'||source==='partnerOnboarding')?'Ram Bahadur Thapa • COL-001':'Self-service',type:purpose};openModal('Payment Successful','Detailed HEI digital receipt',buildDetailedReceipt(details,source))}
 document.addEventListener('DOMContentLoaded',()=>{renderInvestorView('overview')});
 </script>
 
@@ -1865,7 +1851,7 @@ function startOnboarding(mode='sip', step=1){
  renderOnboarding();
 }
 function renderOnboarding(){
- let b=''; const source=window.heiOnboardingSource==='collector'?'Collector-assisted onboarding':'Digital onboarding';
+ let b=''; const source=window.heiOnboardingSource==='partner'?'Partner-assisted onboarding':'Digital onboarding';
  if(onboardStep===0) b=`
   <div class="invest-starter" style="box-shadow:none; border:none; padding:10px;">
       <div class="starter-head"><div><span style="font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:#7c8a91;">START HERE</span><h3 style="margin:5px 0 0;color:#173f50;font-size:16px;">How would you like to invest?</h3></div><div style="width:29px;height:29px;border-radius:50%;background:#eef6f8;color:#166283;display:grid;place-items:center;font-size:9px;font-weight:800;">01</div></div>
@@ -1900,7 +1886,7 @@ function renderOnboarding(){
 
  if(onboardStep===7) b=`${finalProgress(7)}<div class="step-label">Step 7 • Investment</div><div class="form-title">Choose your first investment.</div><div class="form-sub">Identity, bank and BOID are verified. Continue directly to investment.</div><div class="choice-grid"><div class="choice ${investMode==='sip'?'selected':''}" onclick="investMode='sip';renderOnboarding()"><h4>Monthly SIP</h4><p>Recurring monthly investment.</p></div><div class="choice ${investMode==='lump'?'selected':''}" onclick="investMode='lump';renderOnboarding()"><h4>Lump Sum</h4><p>One-time investment.</p></div></div><div class="field full" style="margin-top:12px"><label>FUND</label><select><option>HEI Equity Growth Fund • NAV Rs. 12.45</option><option>HEI Balanced Fund • NAV Rs. 11.75</option><option>HEI Income Fund • NAV Rs. 10.92</option></select></div><div style="margin-top:11px"><div class="micro">${investMode==='sip'?'MONTHLY SIP AMOUNT':'INVESTMENT AMOUNT'}</div><div class="amount-choices">${[1000,2000,2500,5000,10000,25000].map(a=>`<button class="amount-chip ${investAmount===a?'active':''}" onclick="investAmount=${a};saveDraft(7);renderOnboarding()">${money(a)}</button>`).join('')}</div></div><div class="modal-actions"><button class="save-exit" onclick="saveAndExit()">Save & exit</button><button class="btn btn-primary" onclick="onboardStep=8;saveDraft(8);renderOnboarding()">Review Payment</button></div>`;
 
- if(onboardStep===8) b=`${finalProgress(8)}<div class="step-label">Step 8 • Payment</div><div class="form-title">Review and pay.</div><div class="payment-method selected"><div class="cips-mark"><span class="c1">connect</span><span class="c2">IPS</span></div><div><b style="font-size:10px;color:#304751">QR Payment</b><div class="micro">Scan using a supported banking app</div></div></div><div class="review-box"><div class="review-row"><span>Investor</span><b>Aarav Poudel</b></div><div class="review-row"><span>Investment</span><b>${investMode==='sip'?'Monthly SIP':'Lump Sum'}</b></div><div class="review-row"><span>Fund</span><b>HEI Equity Growth Fund</b></div><div class="review-row"><span>Amount</span><b>${money(investAmount)}</b></div></div><div class="modal-actions"><button class="save-exit" onclick="saveAndExit()">Save & exit</button><button class="btn btn-primary" onclick="openConnectIpsPayment('Aarav Poudel',investAmount,'${investMode==='sip'?'New SIP Investment':'New Lump Sum Investment'}','${window.heiOnboardingSource==='collector'?'collectorOnboarding':'onboarding'}')">Generate connectIPS QR</button></div>`;
+ if(onboardStep===8) b=`${finalProgress(8)}<div class="step-label">Step 8 • Payment</div><div class="form-title">Review and pay.</div><div class="payment-method selected"><div class="cips-mark"><span class="c1">connect</span><span class="c2">IPS</span></div><div><b style="font-size:10px;color:#304751">QR Payment</b><div class="micro">Scan using a supported banking app</div></div></div><div class="review-box"><div class="review-row"><span>Investor</span><b>Aarav Poudel</b></div><div class="review-row"><span>Investment</span><b>${investMode==='sip'?'Monthly SIP':'Lump Sum'}</b></div><div class="review-row"><span>Fund</span><b>HEI Equity Growth Fund</b></div><div class="review-row"><span>Amount</span><b>${money(investAmount)}</b></div></div><div class="modal-actions"><button class="save-exit" onclick="saveAndExit()">Save & exit</button><button class="btn btn-primary" onclick="openConnectIpsPayment('Aarav Poudel',investAmount,'${investMode==='sip'?'New SIP Investment':'New Lump Sum Investment'}','${window.heiOnboardingSource==='partner'?'partnerOnboarding':'onboarding'}')">Generate connectIPS QR</button></div>`;
 
  openModal('Open HEI Investment Account',source,b);
 }
@@ -2007,7 +1993,7 @@ function investorReceiptsHtml(){
 }
 function openInvestorReceipt(idx){
  const s=getInvestorState(),x=s.transactions[idx];if(!x)return;
- const d={name:s.customer.name,amount:x.amount,purpose:x.type,customerId:s.customer.id,boid:s.customer.boid,fund:x.fund,receipt:'HEI-RCP-'+String(83000+idx),internalRef:x.id,gatewayRef:'CIPS-'+String(982174500+idx),collector:x.channel==='Collector QR'?'Ram Bahadur Thapa • COL-001':'Self-service',type:x.type};
+ const d={name:s.customer.name,amount:x.amount,purpose:x.type,customerId:s.customer.id,boid:s.customer.boid,fund:x.fund,receipt:'HEI-RCP-'+String(83000+idx),internalRef:x.id,gatewayRef:'CIPS-'+String(982174500+idx),partner:x.channel==='Partner QR'?'Ram Bahadur Thapa • COL-001':'Self-service',type:x.type};
  openModal('Digital Receipt',x.id,buildDetailedReceipt(d,'portal'));
 }
 function investorProfileHtml(){
@@ -2074,7 +2060,7 @@ function completeRemittance(){
 /* If a new RemitInvest user completes onboarding, allow them to continue the remittance journey. */
 function showNewAccountSuccess(destination){
  const returnRemit=finalReturnToRemit; finalReturnToRemit=false;
- openModal('Account Opened','Investment account is active',`<div class="success-state"><div class="success-icon">✓</div><h3>HEI account is ready.</h3><div class="form-sub">KYC and the first investment are complete.</div><div class="review-box"><div class="review-row"><span>Customer ID</span><b>HEI-CUS-10882</b></div><div class="review-row"><span>Investment</span><b>${investMode==='sip'?'Monthly SIP':'Lump Sum'} • ${money(investAmount)}</b></div><div class="review-row"><span>KYC Status</span><b>Verified</b></div></div><button class="btn btn-primary" style="margin-top:13px" onclick="${returnRemit?"closeModal();openRemittance();finalRemitStep=4;renderRemit()":destination==='collector'?"closeModal();openApp('collectorApp');renderCollectorView('customers')":"closeModal();openApp('investorApp');renderInvestorView('overview')"}">${returnRemit?'Continue RemitInvest':destination==='collector'?'Back to Collector Portal':'Open Portfolio'}</button></div>`);
+ openModal('Account Opened','Investment account is active',`<div class="success-state"><div class="success-icon">✓</div><h3>HEI account is ready.</h3><div class="form-sub">KYC and the first investment are complete.</div><div class="review-box"><div class="review-row"><span>Customer ID</span><b>HEI-CUS-10882</b></div><div class="review-row"><span>Investment</span><b>${investMode==='sip'?'Monthly SIP':'Lump Sum'} • ${money(investAmount)}</b></div><div class="review-row"><span>KYC Status</span><b>Verified</b></div></div><button class="btn btn-primary" style="margin-top:13px" onclick="${returnRemit?"closeModal();openRemittance();finalRemitStep=4;renderRemit()":destination==='partner'?"closeModal();openApp('partnerApp');renderPartnerView('customers')":"closeModal();openApp('investorApp');renderInvestorView('overview')"}">${returnRemit?'Continue RemitInvest':destination==='partner'?'Back to Partner Portal':'Open Portfolio'}</button></div>`);
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
