@@ -826,7 +826,7 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="brand-copy"><b>HEI RemitInvest</b><span>Convert part of every remittance into long-term investment</span></div>
     </div>
-    <button class="btn btn-text" onclick="closeApp('remitApp')">&larr; Back to Home</button>
+    <button class="btn btn-text" onclick="goBackApp('remitApp')">&larr; Go Back</button>
   </header>
 
   <main class="app-main">
@@ -871,7 +871,29 @@ function openModal(title,sub,body){
   document.getElementById('modalLayer').classList.add('show');
 }
 function closeModal(){document.getElementById('modalLayer').classList.remove('show'); if(paymentTimer){clearInterval(paymentTimer);paymentTimer=null}}
-function openApp(id){closeModal();document.querySelectorAll('.app-screen').forEach(x=>x.classList.remove('show'));document.getElementById(id).classList.add('show')}
+let previousAppId = null;
+function openApp(id){
+  closeModal();
+  let current = document.querySelector('.app-screen.show');
+  if(current && current.id !== id) previousAppId = current.id;
+  else if(!current) previousAppId = null;
+  document.querySelectorAll('.app-screen').forEach(x=>x.classList.remove('show'));
+  document.getElementById(id).classList.add('show');
+}
+function goBackApp(id){
+  closeApp(id);
+  if(previousAppId) { document.getElementById(previousAppId).classList.add('show'); previousAppId = null; }
+}
+function downloadDummyPdf(filename){
+  const pdfContent = "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 4 0 R >> >> /MediaBox [0 0 612 792] /Contents 5 0 R >>\nendobj\n4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n5 0 obj\n<< /Length 44 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(HEI Document) Tj\nET\nendstream\nendobj\nxref\n0 6\n0000000000 65535 f \n0000000010 00000 n \n0000000059 00000 n \n0000000116 00000 n \n0000000216 00000 n \n0000000304 00000 n \ntrailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n397\n%%EOF";
+  const blob = new Blob([pdfContent], {type: 'application/pdf'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename || 'HEI_Document.pdf';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('PDF downloaded successfully');
+}
 function closeApp(id){document.getElementById(id).classList.remove('show')}
 function toast(t){let el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200)}
 
@@ -1409,7 +1431,7 @@ function buildDetailedReceipt(d,source){
     </div>
     <div class="dr-foot"><small>${note} This computer-generated receipt is for demonstration and does not represent a live financial transaction.</small><span class="badge blue">DIGITAL</span></div>
   </div>
-  <div class="receipt-actions"><button class="btn btn-outline" onclick="window.print()">Print</button><button class="btn btn-outline" onclick="toast('PDF download simulated')">Download PDF</button><button class="btn btn-outline" onclick="toast('Receipt link sent by SMS')">Send SMS</button><button class="btn btn-primary" onclick="finishPayment('${source}')">${source.startsWith('collector')?'Done':'Continue'}</button></div>`;
+  <div class="receipt-actions"><button class="btn btn-outline" onclick="window.print()">Print</button><button class="btn btn-outline" onclick="downloadDummyPdf('HEI_Receipt.pdf')">Download PDF</button><button class="btn btn-outline" onclick="toast('Receipt link sent by SMS')">Send SMS</button><button class="btn btn-primary" onclick="finishPayment('${source}')">${source.startsWith('collector')?'Done':'Continue'}</button></div>`;
 }
 
 /* Collector portal */
@@ -1578,7 +1600,7 @@ function completeRemittance(){
    <div class="dr-body"><div class="dr-row"><span>Investor</span><b>Aarav Poudel • HEI-CUS-10045</b></div><div class="dr-row"><span>Remittance Partner</span><b>${remitPartner}</b></div><div class="dr-row"><span>Sending Country</span><b>United Arab Emirates</b></div><div class="dr-row"><span>Total NPR Proceeds</span><b>${money(remitNpr)}</b></div><div class="dr-row"><span>Family Transfer</span><b>${money(fam)}</b></div><div class="dr-row"><span>HEI SIP Investment</span><b>${money(sip)}</b></div><div class="dr-row"><span>Fund</span><b>HEI Equity Growth Fund</b></div><div class="dr-row"><span>Standing Instruction</span><b>${remitPct}% of every eligible remittance</b></div><div class="dr-row"><span>Reference</span><b>HEI-RMT-2083-00092</b></div></div>
    <div class="dr-foot"><small>Prototype instruction. A live service would depend on remittance-partner, KYC and investment-system integrations.</small><span class="badge red">REMITINVEST</span></div>
  </div>
- <div class="receipt-actions"><button class="btn btn-outline" onclick="window.print()">Print</button><button class="btn btn-outline" onclick="toast('PDF download simulated')">Download PDF</button><button class="btn btn-primary" onclick="closeModal();openApp('investorApp')">View Portfolio</button></div>`);
+ <div class="receipt-actions"><button class="btn btn-outline" onclick="window.print()">Print</button><button class="btn btn-outline" onclick="downloadDummyPdf('HEI_Receipt.pdf')">Download PDF</button><button class="btn btn-primary" onclick="closeModal();openApp('investorApp')">View Portfolio</button></div>`);
 }
 
 /* Make portal side links feel clickable in the prototype */
@@ -1919,7 +1941,7 @@ function completeRemittance(){
  const investment=finalRemitRule==='fixed'?Math.min(finalRemitFixed,finalRemitNpr):finalRemitNpr*finalRemitPct/100,family=finalRemitNpr-investment;
  const s=getInvestorState();
  if(investment>0){let h=s.holdings.find(x=>x.code==='HEI-EGF');const units=investment/h.nav,newInv=h.invested+investment,newUnits=h.units+units;h.invested=newInv;h.units=newUnits;h.wacc=newInv/newUnits;s.transactions.unshift({id:'HEI-TXN-'+String(4700+Math.floor(Math.random()*200)),date:'07 Aug 2026',type:'Remittance SIP',channel:finalRemitPartner+'*',fund:h.name,amount:investment,status:'Completed'});saveInvestorState(s)}
- openModal('RemitInvest Confirmed','Remittance and investment instruction recorded',`<div class="success-state"><div class="success-icon">✓</div><h3>One transfer. Two outcomes.</h3><div class="form-sub">Family support continues, while part of the remittance is invested through HEI.</div></div><div class="digital-receipt"><div class="dr-head"><div class="dr-title"><b>Himalayan Everest Investment Limited</b><span>RemitInvest Instruction Receipt</span></div><div style="text-align:right"><span class="badge green">AUTHORIZED</span><div class="micro" style="margin-top:5px">HEI-RMT-2083-00092</div></div></div><div class="dr-amount"><span>HEI Investment This Transfer</span><b>${money(investment)}</b></div><div class="dr-body"><div class="dr-row"><span>Investor</span><b>Aarav Poudel • HEI-CUS-10045</b></div><div class="dr-row"><span>Sending Country</span><b>${finalRemitCountry}</b></div><div class="dr-row"><span>Remittance Partner</span><b>${finalRemitPartner}</b></div><div class="dr-row"><span>NPR Proceeds</span><b>${money(finalRemitNpr)}</b></div><div class="dr-row"><span>Family Transfer</span><b>${money(family)}</b></div><div class="dr-row"><span>HEI Investment</span><b>${money(investment)}</b></div><div class="dr-row"><span>Fund</span><b>HEI Equity Growth Fund</b></div><div class="dr-row"><span>Standing Instruction</span><b>${finalRemitFrequency==='every'?(finalRemitRule==='percent'?finalRemitPct+'% of eligible remittances':money(finalRemitFixed)+' per eligible remittance'):'One-time only'}</b></div><div class="dr-row"><span>Monthly Safety Cap</span><b>${money(finalRemitCap)}</b></div><div class="dr-row"><span>Reference</span><b>HEI-RMT-2083-00092</b></div></div><div class="dr-foot"><small>Prototype receipt. Live execution would depend on the participating remittance partner and HEI investment system.</small><span class="badge red">REMITINVEST</span></div></div><div class="receipt-actions"><button class="btn btn-outline" onclick="window.print()">Print</button><button class="btn btn-outline" onclick="toast('Receipt PDF prepared')">Download PDF</button><button class="btn btn-primary" onclick="closeModal();openApp('investorApp');renderInvestorView('overview')">View Portfolio</button></div>`);
+ openModal('RemitInvest Confirmed','Remittance and investment instruction recorded',`<div class="success-state"><div class="success-icon">✓</div><h3>One transfer. Two outcomes.</h3><div class="form-sub">Family support continues, while part of the remittance is invested through HEI.</div></div><div class="digital-receipt"><div class="dr-head"><div class="dr-title"><b>Himalayan Everest Investment Limited</b><span>RemitInvest Instruction Receipt</span></div><div style="text-align:right"><span class="badge green">AUTHORIZED</span><div class="micro" style="margin-top:5px">HEI-RMT-2083-00092</div></div></div><div class="dr-amount"><span>HEI Investment This Transfer</span><b>${money(investment)}</b></div><div class="dr-body"><div class="dr-row"><span>Investor</span><b>Aarav Poudel • HEI-CUS-10045</b></div><div class="dr-row"><span>Sending Country</span><b>${finalRemitCountry}</b></div><div class="dr-row"><span>Remittance Partner</span><b>${finalRemitPartner}</b></div><div class="dr-row"><span>NPR Proceeds</span><b>${money(finalRemitNpr)}</b></div><div class="dr-row"><span>Family Transfer</span><b>${money(family)}</b></div><div class="dr-row"><span>HEI Investment</span><b>${money(investment)}</b></div><div class="dr-row"><span>Fund</span><b>HEI Equity Growth Fund</b></div><div class="dr-row"><span>Standing Instruction</span><b>${finalRemitFrequency==='every'?(finalRemitRule==='percent'?finalRemitPct+'% of eligible remittances':money(finalRemitFixed)+' per eligible remittance'):'One-time only'}</b></div><div class="dr-row"><span>Monthly Safety Cap</span><b>${money(finalRemitCap)}</b></div><div class="dr-row"><span>Reference</span><b>HEI-RMT-2083-00092</b></div></div><div class="dr-foot"><small>Prototype receipt. Live execution would depend on the participating remittance partner and HEI investment system.</small><span class="badge red">REMITINVEST</span></div></div><div class="receipt-actions"><button class="btn btn-outline" onclick="window.print()">Print</button><button class="btn btn-outline" onclick="downloadDummyPdf('HEI_Receipt.pdf')">Download PDF</button><button class="btn btn-primary" onclick="closeModal();openApp('investorApp');renderInvestorView('overview')">View Portfolio</button></div>`);
 }
 
 /* If a new RemitInvest user completes onboarding, allow them to continue the remittance journey. */
