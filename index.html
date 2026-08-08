@@ -2394,13 +2394,13 @@ async function flowInvest(mode){
   await addBotMsg("Let's set up a new <b>"+modeLabel+'</b>! 🎯',500);
   await addBotMsg('Which fund would you like to invest in?',500);
   addOptions([
-    {label:'HEI Equity Growth Fund (High growth)',action:function(){chatData.fund='HEI Equity Growth Fund';investAmount();}},
-    {label:'HEI Balanced Fund (Moderate)',action:function(){chatData.fund='HEI Balanced Fund';investAmount();}},
-    {label:'HEI Income Fund (Stable)',action:function(){chatData.fund='HEI Income Fund';investAmount();}}
+    {label:'HEI Equity Growth Fund (High growth)',action:function(){chatData.fund='HEI Equity Growth Fund';chatInvestAmount();}},
+    {label:'HEI Balanced Fund (Moderate)',action:function(){chatData.fund='HEI Balanced Fund';chatInvestAmount();}},
+    {label:'HEI Income Fund (Stable)',action:function(){chatData.fund='HEI Income Fund';chatInvestAmount();}}
   ]);
 }
 
-async function investAmount(){
+async function chatInvestAmount(){
   await addBotMsg('Selected: <b>'+chatData.fund+'</b> ✓',400);
   var label = chatData.mode==='sip' ? 'How much monthly?' : 'How much to invest?';
   await addBotMsg(label,400);
