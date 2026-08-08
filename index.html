@@ -1279,7 +1279,14 @@ function openInvestorLogin(intent=null){
   `);
 }
 function customerLoginSuccess(){
-  if(window.heiLoginIntent && window.heiLoginIntent.type==='investment'){
+  if(window.heiLoginIntent && window.heiLoginIntent.type==='chatLogin'){
+    window.heiLoginIntent=null;
+    closeModal();
+    if(typeof chatPlatform !== 'undefined'){
+      chatLoggedIn = true;
+      openChatWindow(chatPlatform);
+    }
+  } else if(window.heiLoginIntent && window.heiLoginIntent.type==='investment'){
     const i=window.heiLoginIntent; window.heiLoginIntent=null;
     investMode=i.mode; investAmount=i.amount;
     closeModal();
@@ -2105,7 +2112,7 @@ function openChatWindow(platform){
   else if(platform==='messenger'){title.textContent='HEI Investment';sub.textContent='Active now';avatar.textContent='HEI';}
   else{title.textContent='HEI Support';sub.textContent='Online • Typically replies instantly';avatar.textContent='HEI';}
   win.classList.add('show');
-  chatRegistered = !!localStorage.getItem(HEI_INVESTOR_STATE_KEY);
+  chatLoggedIn = false;
   setTimeout(function(){startChat()},500);
 }
 
@@ -2196,27 +2203,45 @@ function sendChatMsg(){
 
 async function startChat(){
   await addBotMsg('Hi there! 👋 Welcome to <b>HEI Investment Support</b>.',700);
-  if(chatRegistered){
+  if(typeof chatLoggedIn !== 'undefined' && chatLoggedIn){
     var s=getInvestorState();
     await addBotMsg('Welcome back, <b>'+s.customer.name+'</b>! How can I help you today?',600);
+    showMainMenu();
   } else {
-    await addBotMsg("I'm your digital assistant. I can help you open an account, invest, or manage your portfolio — all right here in this chat.",600);
+    await addBotMsg("I'm your digital assistant. Are you already an investor with us, or looking to start your investment journey?",600);
+    addOptions([
+      {label:'🌱 I am a new investor', action:function(){flowNewUserChoice()}},
+      {label:'👤 I am an existing investor', action:function(){flowExistingUserLogin()}}
+    ]);
   }
-  showMainMenu();
+}
+
+async function flowNewUserChoice(){
+  await addBotMsg("Welcome! We're excited to have you on board. 🚀", 500);
+  await addBotMsg("Would you like to start a monthly SIP or make a one-time Lump Sum investment?", 500);
+  addOptions([
+    {label:'📈 Open Account & Start SIP', action:function(){flowRegister('sip')}},
+    {label:'💰 Open Account & Lump Sum', action:function(){flowRegister('lump')}}
+  ]);
+}
+
+async function flowExistingUserLogin(){
+  await addBotMsg("Welcome back! To manage your portfolio, please login securely.", 500);
+  addOptions([
+    {label:'🔒 Login to Customer Portal', action:function(){
+      closeChatWindow();
+      openInvestorLogin({type:'chatLogin'});
+    }}
+  ]);
 }
 
 function showMainMenu(){
   var opts = [];
-  if(!chatRegistered){
-    opts.push({label:'🆕 Open HEI Account & Start SIP', action:function(){flowRegister('sip')}});
-    opts.push({label:'💰 Open Account & Lump Sum', action:function(){flowRegister('lump')}});
-  } else {
-    opts.push({label:'📈 Start a new SIP', action:function(){flowInvest('sip')}});
-    opts.push({label:'💳 Pay my SIP due', action:function(){flowPaySipDue()}});
-    opts.push({label:'💰 New lump sum investment', action:function(){flowInvest('lump')}});
-    opts.push({label:'📉 Sell / Redeem investments', action:function(){flowSell()}});
-    opts.push({label:'📊 Check my portfolio', action:function(){flowPortfolio()}});
-  }
+  opts.push({label:'📈 Start a new SIP', action:function(){flowInvest('sip')}});
+  opts.push({label:'💳 Pay my SIP due', action:function(){flowPaySipDue()}});
+  opts.push({label:'💰 New lump sum investment', action:function(){flowInvest('lump')}});
+  opts.push({label:'📉 Sell / Redeem investments', action:function(){flowSell()}});
+  opts.push({label:'📊 Check my portfolio', action:function(){flowPortfolio()}});
   opts.push({label:'❓ Other enquiry', action:function(){flowOther()}});
   addOptions(opts);
 }
@@ -2368,7 +2393,7 @@ async function regPaymentProcess(){
   var txnId = 'HEI-TXN-'+String(5000+Math.floor(Math.random()*500));
   s.transactions.unshift({id:txnId,date:'07 Aug 2026',type:chatData.mode==='sip'?'SIP':'Lump Sum',channel:'Chat Support',fund:chatData.fund,amount:chatData.amount,status:'Completed'});
   saveInvestorState(s);
-  chatRegistered = true;
+  chatLoggedIn = true;
   await addBotMsg('✅ <b>Payment successful!</b>',600);
   await addBotMsg('🎉 <b>Your HEI Investment Account is now active!</b>',700);
   var modeLabel = chatData.mode==='sip' ? 'Monthly SIP' : 'Lump Sum';
